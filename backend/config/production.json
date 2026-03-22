@@ -1,0 +1,6 @@
+{
+  "jwt": {
+    "accessExpiresIn": "15m",
+    "refreshExpiresIn": "7d"
+  }
+}

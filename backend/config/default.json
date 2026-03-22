@@ -1,0 +1,21 @@
+{
+  "port": 5000,
+  "mongodb": {
+    "uri": "mongodb://localhost:27017/pvjewelleryshop"
+  },
+  "jwt": {
+    "accessSecret": "change-me-access-secret-in-production",
+    "refreshSecret": "change-me-refresh-secret-in-production",
+    "accessExpiresIn": "15m",
+    "refreshExpiresIn": "7d"
+  },
+ "frontendUrl": "http://localhost:3000",
+  "rateLimit": {
+    "windowMs": 900000,
+    "max": 100
+  },
+  "authRateLimit": {
+    "windowMs": 900000,
+    "max": 10
+  }
+}
