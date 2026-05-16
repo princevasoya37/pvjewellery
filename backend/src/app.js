@@ -15,7 +15,7 @@ app.set('trust proxy', 1); // Trust first proxy (e.g., for local development)
 const frontendUrl = process.env.FRONTEND_URL || config.get('frontendUrl');
 
 app.use(helmet());
-app.use(cors({ origin: frontendUrl, credentials: true }));
+app.use(cors({ origin: [frontendUrl, 'http://127.0.0.1:3000', 'http://localhost:3000'], credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

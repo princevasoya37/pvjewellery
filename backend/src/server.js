@@ -8,7 +8,7 @@ import app from './app.js';
 const port = process.env.PORT || config.get('port');
 
 connectDB().then(() => {
-  app.listen(port, () => {
+  app.listen(port, '0.0.0.0', () => {
     console.log(`PVJewelleryShop API running on port ${port}`);
   });
 }).catch((err) => {
