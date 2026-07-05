@@ -9,13 +9,13 @@
     "accessExpiresIn": "15m",
     "refreshExpiresIn": "7d"
   },
- "frontendUrl": "http://localhost:3000",
+  "frontendUrl": "http://localhost:3000",
   "rateLimit": {
     "windowMs": 900000,
-    "max": 100
+    "max": 5000
   },
   "authRateLimit": {
     "windowMs": 900000,
-    "max": 10
+    "max": 1000
   }
 }

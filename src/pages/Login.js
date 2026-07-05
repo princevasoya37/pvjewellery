@@ -17,12 +17,10 @@ export default function Login() {
     e.preventDefault();
     dispatch(clearError());
     try {
-      const data = await dispatch(loginUser(email, password)).unwrap();
+      const data = await dispatch(loginUser(email, password));
 
       let targetPath = from;
 
-      // If there is no "from" (direct visit to login) or it points back to auth pages,
-      // choose a sensible default based on user role.
       if (!targetPath || ['/login', '/register', '/forgot-password'].includes(targetPath)) {
         if (data?.user?.role === 'admin') {
           targetPath = '/admin';
@@ -32,54 +30,64 @@ export default function Login() {
       }
 
       navigate(targetPath, { replace: true });
-    } catch (_) {}
+    } catch (err) {
+      console.error("Login Error:", err);
+    }
   };
 
   return (
-    <div className="max-w-md mx-auto px-4 py-12">
-      <h1 className="font-display text-2xl font-semibold text-gray-800 mb-6">Login</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="max-w-md mx-auto px-4 py-24 font-sans">
+      <div className="text-center mb-8">
+        <span className="font-sans text-xs uppercase tracking-[0.3em] text-gold font-semibold block mb-2">Private Portal</span>
+        <h1 className="font-display text-3xl sm:text-4xl font-light text-luxury-black dark:text-white font-serif">Maison Sign In</h1>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-6 bg-white dark:bg-[#15120F] border border-gold/20 p-8 shadow-soft-lg">
         {successMessage && (
-          <div className="p-3 bg-green-50 text-green-700 rounded-md text-sm">
+          <div className="p-4 bg-green-50 dark:bg-green-950/40 border border-green-300 text-green-700 dark:text-green-300 text-xs tracking-wider uppercase font-medium">
             {successMessage}
           </div>
         )}
         {error && (
-          <div className="p-3 bg-red-50 text-red-700 rounded-md text-sm">{error}</div>
+          <div className="p-4 bg-red-50 dark:bg-red-950/40 border border-red-300 text-red-700 dark:text-red-300 text-xs tracking-wider uppercase font-medium">
+            {error}
+          </div>
         )}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+          <label className="block text-xs uppercase tracking-wider text-gray-500 mb-2">Registered Email</label>
           <input
             type="email"
-            className="input-field"
+            className="input-field py-3 text-xs"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
             autoComplete="email"
+            placeholder="client@maison.com"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+          <label className="block text-xs uppercase tracking-wider text-gray-500 mb-2">Confidential Password</label>
           <input
             type="password"
-            className="input-field"
+            className="input-field py-3 text-xs"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
             autoComplete="current-password"
+            placeholder="••••••••••••"
           />
         </div>
-        <div className="flex items-center justify-between">
-          <Link to="/forgot-password" className="text-sm text-primary-600 hover:underline">
-            Forgot password?
+        <div className="flex items-center justify-between text-xs font-light">
+          <Link to="/forgot-password" className="text-gold hover:underline">
+            Forgot confidential password?
           </Link>
         </div>
-        <button type="submit" className="btn-primary w-full" disabled={loading}>
-          {loading ? 'Signing in...' : 'Sign in'}
+        <button type="submit" className="btn-primary w-full py-4 shadow-luxury" disabled={loading}>
+          {loading ? 'Authenticating Credentials...' : 'Sign In to Private Portal'}
         </button>
       </form>
-      <p className="mt-4 text-center text-gray-600 text-sm">
-        Don&apos;t have an account? <Link to="/register" className="text-primary-600 hover:underline">Register</Link>
+      <p className="mt-8 text-center text-gray-500 dark:text-gray-400 text-xs font-light">
+        Don&apos;t have an account? <Link to="/register" className="text-gold font-medium hover:underline">Apply for Client Account</Link>
       </p>
     </div>
   );

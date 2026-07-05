@@ -2,29 +2,120 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700&family=Cinzel:wght@600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600&family=Cinzel:wght@500;600;700&display=swap');
 
+html {
+  scroll-behavior: smooth;
+}
+
+/* Light Mode Global Defaults */
 body {
-  @apply antialiased text-slate-800 bg-slate-50;
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  @apply antialiased text-[#1A1A1A] bg-[#FCFAF6] transition-colors duration-500;
+  font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Dark Mode Global Comprehensive Overrides (Using pure CSS properties to eliminate circular dependency) */
+html.dark,
+body.dark {
+  background-color: #0D0A07;
+  color: #F9F6F0;
+}
+
+body.dark h1,
+body.dark h2,
+body.dark h3,
+body.dark h4,
+body.dark h5,
+body.dark h6,
+body.dark .section-title {
+  color: #F9F6F0 !important;
+}
+
+body.dark p,
+body.dark span:not(.pill-badge):not(.text-gold):not([class*="bg-"]),
+body.dark li,
+body.dark label,
+body.dark blockquote {
+  color: #EAE2D5;
+}
+
+body.dark .card,
+body.dark .glass-panel,
+body.dark aside,
+body.dark [class*="bg-white"],
+body.dark [class*="bg-gray-50"],
+body.dark [class*="bg-gray-100"] {
+  background-color: #15120F !important;
+  border-color: rgba(212, 175, 55, 0.3) !important;
+  color: #F9F6F0 !important;
+}
+
+body.dark [class*="text-luxury-black"],
+body.dark [class*="text-gray-800"],
+body.dark [class*="text-gray-700"],
+body.dark [class*="text-gray-600"],
+body.dark [class*="text-gray-500"] {
+  color: #EAE2D5 !important;
+}
+
+body.dark .text-gold {
+  color: #D4AF37 !important;
+}
+
+body.dark input,
+body.dark select,
+body.dark textarea {
+  background-color: #1A1613 !important;
+  color: #F9F6F0 !important;
+  border-color: rgba(212, 175, 55, 0.3) !important;
+}
+
+body.dark .border-gray-100,
+body.dark .border-gray-200,
+body.dark .border-gray-300 {
+  border-color: rgba(212, 175, 55, 0.2) !important;
+}
+
+::selection {
+  @apply bg-gold/20 text-luxury-black;
 }
 
 @layer components {
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-primary-600 text-white font-medium rounded-full shadow-sm hover:bg-primary-700 hover:shadow-md active:scale-[0.98] transition-all duration-200 ease-out-soft;
+    @apply inline-flex items-center justify-center gap-3 px-8 py-3.5 bg-luxury-black text-white font-sans text-xs uppercase tracking-[0.2em] font-medium rounded-none border border-transparent hover:bg-gold hover:text-luxury-black hover:border-gold hover:shadow-luxury active:scale-[0.98] transition-all duration-300 ease-out-soft;
   }
+  body.dark .btn-primary {
+    background-color: #D4AF37 !important;
+    color: #0A0A0A !important;
+  }
+  body.dark .btn-primary:hover {
+    background-color: #FFFFFF !important;
+    color: #0A0A0A !important;
+    border-color: #FFFFFF !important;
+  }
+
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 border border-slate-200 rounded-full text-slate-700 bg-white hover:bg-slate-50 hover:border-slate-300 transition-all duration-200 ease-out-soft;
+    @apply inline-flex items-center justify-center gap-3 px-8 py-3.5 bg-transparent border border-gold/60 text-luxury-black font-sans text-xs uppercase tracking-[0.2em] font-medium rounded-none hover:bg-gold hover:text-luxury-black hover:border-gold hover:shadow-luxury active:scale-[0.98] transition-all duration-300 ease-out-soft;
   }
+  body.dark .btn-secondary {
+    border-color: rgba(212, 175, 55, 0.6) !important;
+    color: #D4AF37 !important;
+  }
+  body.dark .btn-secondary:hover {
+    background-color: #D4AF37 !important;
+    color: #0A0A0A !important;
+  }
+
   .input-field {
-    @apply w-full px-3 py-2.5 border border-slate-200 rounded-lg bg-white/80 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 placeholder:text-slate-400 transition-all;
+    @apply w-full px-4 py-3.5 border border-gold/30 rounded-none bg-white/90 shadow-sm focus:outline-none focus:ring-1 focus:ring-gold focus:border-gold text-sm placeholder:text-gray-400 transition-all font-sans;
   }
   .card {
-    @apply bg-surface rounded-2xl shadow-soft-lg border border-slate-100/80 overflow-hidden backdrop-blur-sm;
+    @apply bg-white rounded-none border border-gold/20 overflow-hidden shadow-soft-lg hover:border-gold/60 transition-all duration-500;
   }
 
   .pill-badge {
-    @apply inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-primary-50 text-primary-700 border border-primary-100;
+    @apply inline-flex items-center gap-1.5 px-4 py-1.5 rounded-none text-[10px] uppercase tracking-[0.2em] font-medium bg-gold text-luxury-black font-sans tracking-widest;
   }
 
   .section-shell {
@@ -32,28 +123,24 @@ body {
   }
 
   .section-title {
-    @apply font-display text-2xl sm:text-3xl font-semibold tracking-tight text-slate-900;
+    @apply font-display text-3xl sm:text-5xl lg:text-6xl font-light tracking-normal text-luxury-black font-serif transition-colors duration-500;
   }
 
   .section-eyebrow {
-    @apply text-xs font-semibold uppercase tracking-[0.18em] text-primary-500;
+    @apply font-sans text-xs font-semibold uppercase tracking-[0.25em] text-gold;
   }
 
   .glass-panel {
-    @apply bg-white/80 backdrop-blur-xl border border-slate-100 shadow-soft-lg;
+    @apply bg-white/90 backdrop-blur-xl border border-gold/30 shadow-soft-lg transition-colors duration-500;
   }
 
-  /* Header crest: fills the circle, no fake backdrop — relies on PNG alpha; layered shadows read as metal */
   .brand-seal {
     @apply relative shrink-0 bg-transparent flex items-center justify-center overflow-visible;
-    /* Removed rounded-full and overflow-hidden to allow full logo visibility */
-    filter: drop-shadow(0 2px 4px rgba(15, 23, 42, 0.06));
+    filter: drop-shadow(0 2px 8px rgba(212, 175, 55, 0.25));
   }
 
   .brand-seal-img {
     @apply h-full w-full object-contain;
-    /* Removed absolute positioning and extreme scaling to show full logo */
-    filter: drop-shadow(0 1px 2px rgba(15, 23, 42, 0.1));
+    filter: drop-shadow(0 1px 3px rgba(10, 10, 10, 0.2));
   }
 }
-

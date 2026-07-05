@@ -19,78 +19,117 @@ export default function Cart() {
 
   if (items.length === 0) {
     return (
-      <div className="max-w-2xl mx-auto px-4 py-16 text-center">
-        <h1 className="font-display text-2xl font-semibold text-gray-800 mb-4">Your cart is empty</h1>
-        <Link to="/products" className="btn-primary">Continue shopping</Link>
+      <div className="max-w-2xl mx-auto px-4 py-24 text-center space-y-6 font-sans">
+        <svg className="w-16 h-16 stroke-1 text-gold/40 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z" />
+        </svg>
+        <h1 className="font-display text-3xl font-light text-luxury-black dark:text-white font-serif">Your Maison Shopping Bag is Empty</h1>
+        <p className="text-gray-500 text-xs font-light tracking-wide">Explore our confidential high jewellery collections and bespoke masterworks.</p>
+        <Link to="/products" className="btn-primary shadow-luxury">Discover Vaults</Link>
       </div>
     );
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <h1 className="font-display text-2xl font-semibold text-gray-800 mb-6">Cart</h1>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="md:col-span-2 space-y-4">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 font-sans">
+      <div className="border-b border-gold/20 pb-6 mb-12 flex flex-col sm:flex-row sm:items-end justify-between">
+        <div>
+          <span className="font-sans text-xs uppercase tracking-[0.3em] text-gold font-semibold block mb-2">Acquisition Bag</span>
+          <h1 className="font-display text-4xl sm:text-5xl font-light text-luxury-black dark:text-white font-serif">Your Curated Masterpieces</h1>
+        </div>
+        <span className="text-xs text-gray-500 font-light mt-2 sm:mt-0">
+          Insured White-Glove Worldwide Delivery Included
+        </span>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <div className="lg:col-span-8 space-y-6">
           {items.map((item) => (
-            <div key={item.productId} className="card p-4 flex gap-4">
-              <div className="w-24 h-24 bg-gray-100 rounded overflow-hidden flex-shrink-0">
+            <div key={item.productId} className="bg-white dark:bg-[#15120F] border border-gold/20 p-6 shadow-soft-lg flex flex-col sm:flex-row gap-6 items-center">
+              <div className="w-full sm:w-32 aspect-square bg-[#F5F5F5] dark:bg-black border border-gold/20 overflow-hidden flex-shrink-0">
                 {item.image ? (
-                  <img src={getImageUrl(item.image)} alt={item.name} className="w-full h-full object-cover" onError={(e) => { e.target.onerror = null; e.target.style.display = 'none'; e.target.nextElementSibling?.classList.remove('hidden'); }} />
-                ) : null}
-                <div className={`w-full h-full flex items-center justify-center text-gray-400 text-xs ${item.image ? 'hidden' : ''}`}>No image</div>
+                  <img src={getImageUrl(item.image)} alt={item.name} className="w-full h-full object-cover" onError={(e) => { e.target.onerror = null; e.target.style.display = 'none'; }} />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-[10px] uppercase tracking-widest text-gray-400">Maison</div>
+                )}
               </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="font-medium text-gray-800 truncate">{item.name}</h3>
-                <p className="text-primary-600">${(item.price * item.quantity).toLocaleString()}</p>
-                <div className="flex items-center gap-2 mt-2">
-                  <input
-                    type="number"
-                    min="1"
-                    value={item.quantity}
-                    onChange={(e) =>
-                      dispatch(updateQuantity({
-                        productId: item.productId,
-                        quantity: Math.max(0, parseInt(e.target.value, 10) || 0),
-                      }))
-                    }
-                    className="input-field w-16"
-                  />
+
+              <div className="flex-1 w-full flex flex-col justify-between">
+                <div>
+                  <span className="font-sans text-[9px] uppercase tracking-[0.3em] text-gold font-medium block mb-1">Haute Creation</span>
+                  <Link to={`/products/${item.productId}`}>
+                    <h3 className="font-display text-xl font-light text-luxury-black dark:text-white line-clamp-1">{item.name}</h3>
+                  </Link>
+                  <p className="text-gold font-semibold font-sans mt-2">
+                    ₹{Number(item.price).toLocaleString('en-IN')}
+                  </p>
+                </div>
+
+                <div className="flex items-center justify-between pt-6 mt-4 border-t border-gray-100 dark:border-gray-800">
+                  <div className="flex items-center border border-gold/40 bg-white dark:bg-black h-10 px-2">
+                    <button
+                      type="button"
+                      onClick={() => dispatch(updateQuantity({ productId: item.productId, quantity: item.quantity - 1 }))}
+                      className="px-3 text-sm hover:text-gold transition-colors dark:text-white focus:outline-none"
+                    >
+                      -
+                    </button>
+                    <span className="px-4 text-xs font-semibold dark:text-white">{item.quantity}</span>
+                    <button
+                      type="button"
+                      onClick={() => dispatch(updateQuantity({ productId: item.productId, quantity: item.quantity + 1 }))}
+                      className="px-3 text-sm hover:text-gold transition-colors dark:text-white focus:outline-none"
+                    >
+                      +
+                    </button>
+                  </div>
+
                   <button
                     type="button"
                     onClick={() => dispatch(removeItem(item.productId))}
-                    className="text-sm text-red-600 hover:underline"
+                    className="text-xs uppercase tracking-wider text-gray-400 hover:text-red-500 underline transition-colors font-light"
                   >
-                    Remove
+                    Remove Masterpiece
                   </button>
                 </div>
               </div>
             </div>
           ))}
         </div>
-        <div>
-          <div className="card p-6 sticky top-24">
-            <h3 className="font-medium text-gray-800 mb-4">Summary</h3>
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span className="text-gray-600">Subtotal</span>
-                <span>${subtotal.toLocaleString()}</span>
+
+        <div className="lg:col-span-4">
+          <div className="bg-white dark:bg-[#15120F] border border-gold/20 p-8 shadow-soft-lg sticky top-28 space-y-6">
+            <h3 className="font-serif text-lg font-medium dark:text-gold uppercase tracking-wider pb-4 border-b border-gold/20">
+              Investment Overview
+            </h3>
+
+            <div className="space-y-3 font-sans text-xs font-light">
+              <div className="flex justify-between text-gray-600 dark:text-gray-300">
+                <span>Subtotal</span>
+                <span className="font-semibold text-luxury-black dark:text-white">₹{Number(subtotal).toLocaleString('en-IN')}</span>
               </div>
               {discount > 0 && (
-                <div className="flex justify-between text-green-600">
-                  <span>Discount</span>
-                  <span>-${discount.toLocaleString()}</span>
+                <div className="flex justify-between text-green-600 font-medium">
+                  <span>Maison Courtesy</span>
+                  <span>-₹{Number(discount).toLocaleString('en-IN')}</span>
                 </div>
               )}
-              <div className="flex justify-between font-medium text-lg pt-2 border-t">
-                <span>Total</span>
-                <span>${total.toLocaleString()}</span>
+              <div className="flex justify-between text-gray-600 dark:text-gray-300 pt-2 border-t border-gray-100 dark:border-gray-800">
+                <span>White-Glove Shipping</span>
+                <span className="text-gold font-semibold uppercase">Complimentary</span>
+              </div>
+              <div className="flex justify-between text-base font-bold text-luxury-black dark:text-white pt-4 border-t border-gold/20">
+                <span className="uppercase tracking-widest text-xs">Total Estimated</span>
+                <span className="text-gold text-lg font-semibold">₹{Number(total).toLocaleString('en-IN')}</span>
               </div>
             </div>
-            <Link to="/checkout" className="btn-primary block w-full text-center mt-6">
-              Proceed to checkout
+
+            <Link to="/checkout" className="btn-primary block w-full text-center py-4 shadow-luxury">
+              Proceed to Secure Checkout
             </Link>
-            <Link to="/products" className="block text-center text-primary-600 text-sm mt-3 hover:underline">
-              Continue shopping
+
+            <Link to="/products" className="block text-center text-xs uppercase tracking-widest text-gray-500 hover:text-luxury-black dark:hover:text-white transition-colors pt-2 font-light">
+              ← Continue Exploring Vaults
             </Link>
           </div>
         </div>
