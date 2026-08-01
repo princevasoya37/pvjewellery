@@ -55,7 +55,7 @@ export const loginUser = (email, password) => async (dispatch) => {
   dispatch(setLoading(true));
   dispatch(clearError());
   try {
-    const data = await authApi.login(email, password);
+    const data = await authApi.login({ email, password });
     dispatch(setCredentials({
       user: data.user,
       accessToken: data.accessToken,

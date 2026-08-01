@@ -48,7 +48,7 @@ module.exports = {
         sans: ['Montserrat', 'system-ui', 'sans-serif'],
         display: ['"Cormorant Garamond"', 'serif'],
         brand: ['Cinzel', 'serif'],
-        serif: ['"Cormorant Garamond"', 'serif'],
+        serif: ['"Playfair Display"', '"Cormorant Garamond"', 'serif'],
       },
       boxShadow: {
         'soft-lg': '0 20px 50px rgba(10, 10, 10, 0.07)',

@@ -24,7 +24,7 @@ export default function Layout() {
 
   return (
     <div className={`min-h-screen flex flex-col font-sans transition-colors duration-500 ${
-      themeMode === 'dark' ? 'bg-[#0D0A07] text-[#F9F6F0]' : 'bg-[#FCFAF6] text-[#1A1A1A]'
+      themeMode === 'dark' ? 'bg-[#0D0A07] text-[#F9F6F0]' : 'bg-[#FBF9F6] text-[#111111]'
     }`}>
       <Header />
       <Drawers />

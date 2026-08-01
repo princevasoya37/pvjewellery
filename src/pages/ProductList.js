@@ -56,37 +56,102 @@ export default function ProductList() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const renderRadioFilter = (title, key, options) => (
+    <div className="py-5 border-b border-gray-200/60 dark:border-gray-800/60">
+      <h3 className="text-[10px] font-semibold uppercase tracking-[0.25em] mb-3 text-[#111111] dark:text-white">{title}</h3>
+      <div className="space-y-2">
+        {options.map((option) => {
+          const isSelected = filters[key] === option;
+          return (
+            <button
+              key={option}
+              type="button"
+              onClick={() => handleFilterChange(key, isSelected ? '' : option)}
+              className="flex items-center gap-3 text-left w-full py-1 text-xs text-gray-600 dark:text-gray-400 hover:text-[#111111] dark:hover:text-white font-sans group transition-colors focus:outline-none"
+            >
+              <span className={`w-3 h-3 rounded-full border flex items-center justify-center transition-all ${
+                isSelected
+                  ? 'border-[#111111] dark:border-gold'
+                  : 'border-gray-300 dark:border-gray-700 group-hover:border-[#111111] dark:group-hover:border-gold'
+              }`}>
+                {isSelected && (
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#111111] dark:bg-gold animate-fadeIn" />
+                )}
+              </span>
+              <span className="uppercase tracking-[0.15em] font-light text-[10px]">{option}</span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 font-sans">
-      <div className="border-b border-gold/20 pb-6 mb-12">
+    <div className="max-w-[1700px] mx-auto px-6 sm:px-12 lg:px-16 py-12 font-sans">
+      <div className="border-b border-gray-200/60 dark:border-gray-800/60 pb-6 mb-12">
         <span className="font-sans text-xs uppercase tracking-[0.3em] text-gold font-semibold block mb-2">Private Vaults</span>
-        <h1 className="font-display text-4xl sm:text-5xl font-light text-luxury-black dark:text-white font-serif">Explore Creations</h1>
+        <h1 className="font-serif text-4xl sm:text-5xl font-light text-[#111111] dark:text-white">Explore Creations</h1>
       </div>
 
       <div className="flex flex-col lg:flex-row gap-12 lg:gap-16">
         {/* Filter Sidebar */}
-        <aside className="lg:w-64 flex-shrink-0 space-y-8 bg-white/60 dark:bg-[#15120F] border border-gold/20 p-8 shadow-sm">
-          <div className="border-b border-gold/20 pb-4">
-            <span className="font-serif text-sm uppercase tracking-[0.25em] font-medium block dark:text-gold">Maison Filters</span>
+        <aside className="lg:w-64 flex-shrink-0 space-y-6 bg-transparent py-2">
+          <div className="border-b border-gray-200/60 dark:border-gray-800/60 pb-4">
+            <span className="font-serif text-sm uppercase tracking-[0.25em] font-medium block text-[#111111] dark:text-gold">Maison Filters</span>
           </div>
 
-          <div className="space-y-6 text-xs uppercase tracking-wider">
-            <div>
-              <label className="block text-gray-500 mb-2 font-medium">Search Vault</label>
+          <div className="space-y-4">
+            {/* Search filter */}
+            <div className="py-5 border-b border-gray-200/60 dark:border-gray-800/60">
+              <label className="block text-[10px] font-semibold uppercase tracking-[0.25em] mb-3 text-[#111111] dark:text-white">Search Vault</label>
               <input
                 type="text"
-                className="input-field py-2.5 text-xs uppercase tracking-wider"
-                placeholder="Search..."
+                className="w-full bg-white/80 dark:bg-[#1A1613] border border-gray-200 dark:border-gray-800 px-4 py-2.5 text-[11px] uppercase tracking-wider text-[#111111] dark:text-white focus:outline-none focus:border-[#111111] dark:focus:border-gold transition-colors"
+                placeholder="Keyword..."
                 value={filters.search || ''}
                 onChange={(e) => handleFilterChange('search', e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleFilterChange('search', e.target.value)}
               />
             </div>
 
-            <div>
-              <label className="block text-gray-500 mb-2 font-medium">Collection Type</label>
+            {/* Custom 4Cs filters */}
+            {renderRadioFilter('Diamond Cut', 'cut', ['Round', 'Princess'])}
+            {renderRadioFilter('Diamond Color', 'color', ['D', 'E', 'F'])}
+            {renderRadioFilter('Diamond Clarity', 'clarity', ['VVS1', 'IF'])}
+
+            {/* Carat range slider */}
+            <div className="py-5 border-b border-gray-200/60 dark:border-gray-800/60">
+              <div className="flex justify-between items-center mb-3">
+                <h3 className="text-[10px] font-semibold uppercase tracking-[0.25em] text-[#111111] dark:text-white">Carat Weight</h3>
+                <span className="text-[9px] tracking-wider text-gray-500 font-sans">
+                  {filters.caratMin || '0.5'} - {filters.caratMax || '5.0'} CT
+                </span>
+              </div>
+              <div className="space-y-2 pt-1">
+                <input
+                  type="range"
+                  min="0.5"
+                  max="5.0"
+                  step="0.1"
+                  value={filters.caratMax || '5.0'}
+                  onChange={(e) => handleFilterChange('caratMax', e.target.value)}
+                  className="w-full h-[2px] bg-gray-200 dark:bg-gray-800 appearance-none cursor-pointer accent-[#111111] dark:accent-gold"
+                />
+                <div className="flex justify-between text-[9px] font-light text-gray-400">
+                  <span>0.5 CT</span>
+                  <span>5.0 CT</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Metal Type */}
+            {renderRadioFilter('Metal Type', 'metal', ['Gold', 'Platinum'])}
+
+            {/* Collection dropdown */}
+            <div className="py-5 border-b border-gray-200/60 dark:border-gray-800/60">
+              <label className="block text-[10px] font-semibold uppercase tracking-[0.25em] mb-3 text-[#111111] dark:text-white">Collection Type</label>
               <select
-                className="input-field py-2.5 text-xs uppercase tracking-wider"
+                className="w-full bg-white/80 dark:bg-[#1A1613] border border-gray-200 dark:border-gray-800 px-3 py-2 text-[11px] uppercase tracking-wider text-[#111111] dark:text-white focus:outline-none focus:border-[#111111] dark:focus:border-gold transition-colors"
                 value={filters.type || ''}
                 onChange={(e) => handleFilterChange('type', e.target.value)}
               >
@@ -99,27 +164,12 @@ export default function ProductList() {
               </select>
             </div>
 
-            <div>
-              <label className="block text-gray-500 mb-2 font-medium">Diamond Silhouette</label>
-              <select
-                className="input-field py-2.5 text-xs uppercase tracking-wider"
-                value={filters.shape || ''}
-                onChange={(e) => handleFilterChange('shape', e.target.value)}
-              >
-                <option value="">All Silhouettes</option>
-                <option value="Round">Round Brilliant</option>
-                <option value="Princess">Princess Cut</option>
-                <option value="Emerald">Emerald Cut</option>
-                <option value="Pear">Pear Silhouette</option>
-                <option value="Oval">Oval Majestic</option>
-              </select>
-            </div>
-
+            {/* Category selection */}
             {categories.length > 0 && (
-              <div>
-                <label className="block text-gray-500 mb-2 font-medium">Category</label>
+              <div className="py-5 border-b border-gray-200/60 dark:border-gray-800/60">
+                <label className="block text-[10px] font-semibold uppercase tracking-[0.25em] mb-3 text-[#111111] dark:text-white">Category</label>
                 <select
-                  className="input-field py-2.5 text-xs uppercase tracking-wider"
+                  className="w-full bg-white/80 dark:bg-[#1A1613] border border-gray-200 dark:border-gray-800 px-3 py-2 text-[11px] uppercase tracking-wider text-[#111111] dark:text-white focus:outline-none focus:border-[#111111] dark:focus:border-gold transition-colors"
                   value={filters.category || ''}
                   onChange={(e) => handleFilterChange('category', e.target.value)}
                 >
@@ -131,34 +181,35 @@ export default function ProductList() {
               </div>
             )}
 
-            <div>
-              <label className="block text-gray-500 mb-2 font-medium">Min Investment (₹)</label>
-              <input
-                type="number"
-                min="0"
-                className="input-field py-2.5 text-xs"
-                placeholder="Min..."
-                value={filters.minPrice || ''}
-                onChange={(e) => handleFilterChange('minPrice', e.target.value)}
-              />
+            {/* Investment Range */}
+            <div className="py-5 border-b border-gray-200/60 dark:border-gray-800/60">
+              <label className="block text-[10px] font-semibold uppercase tracking-[0.25em] mb-3 text-[#111111] dark:text-white">Investment Range (₹)</label>
+              <div className="flex gap-2 items-center">
+                <input
+                  type="number"
+                  min="0"
+                  className="w-1/2 bg-white/80 dark:bg-[#1A1613] border border-gray-200 dark:border-gray-800 px-2 py-2 text-[11px] text-[#111111] dark:text-white focus:outline-none focus:border-[#111111] dark:focus:border-gold transition-colors"
+                  placeholder="Min"
+                  value={filters.minPrice || ''}
+                  onChange={(e) => handleFilterChange('minPrice', e.target.value)}
+                />
+                <span className="text-gray-400 font-light">-</span>
+                <input
+                  type="number"
+                  min="0"
+                  className="w-1/2 bg-white/80 dark:bg-[#1A1613] border border-gray-200 dark:border-gray-800 px-2 py-2 text-[11px] text-[#111111] dark:text-white focus:outline-none focus:border-[#111111] dark:focus:border-gold transition-colors"
+                  placeholder="Max"
+                  value={filters.maxPrice || ''}
+                  onChange={(e) => handleFilterChange('maxPrice', e.target.value)}
+                />
+              </div>
             </div>
 
-            <div>
-              <label className="block text-gray-500 mb-2 font-medium">Max Investment (₹)</label>
-              <input
-                type="number"
-                min="0"
-                className="input-field py-2.5 text-xs"
-                placeholder="Max..."
-                value={filters.maxPrice || ''}
-                onChange={(e) => handleFilterChange('maxPrice', e.target.value)}
-              />
-            </div>
-
-            <div>
-              <label className="block text-gray-500 mb-2 font-medium">Sort Masterpieces</label>
+            {/* Sort options */}
+            <div className="py-5 border-b border-gray-200/60 dark:border-gray-800/60">
+              <label className="block text-[10px] font-semibold uppercase tracking-[0.25em] mb-3 text-[#111111] dark:text-white">Sort Masterpieces</label>
               <select
-                className="input-field py-2.5 text-xs uppercase tracking-wider"
+                className="w-full bg-white/80 dark:bg-[#1A1613] border border-gray-200 dark:border-gray-800 px-3 py-2 text-[11px] uppercase tracking-wider text-[#111111] dark:text-white focus:outline-none focus:border-[#111111] dark:focus:border-gold transition-colors"
                 value={filters.sort || 'newest'}
                 onChange={(e) => handleFilterChange('sort', e.target.value)}
               >
@@ -180,29 +231,34 @@ export default function ProductList() {
             <div className="py-24 text-center font-sans tracking-widest text-xs text-gray-400 uppercase">No Masterpieces match your criteria in the current vault.</div>
           ) : (
             <>
-              <div className="flex items-center justify-between text-xs text-gray-400 font-sans pb-8 border-b border-gold/10">
+              <div className="flex items-center justify-between text-xs text-gray-400 font-sans pb-8 border-b border-gray-200/60 dark:border-gray-800/60">
                 <span className="uppercase tracking-widest font-medium">Curated Vault</span>
                 <span>{pagination.total} Creation{pagination.total !== 1 ? 's' : ''} Available</span>
               </div>
 
-              {Object.entries(filters).filter(([k, v]) => v && ['search', 'type', 'category', 'shape'].includes(k)).length > 0 && (
+              {Object.entries(filters).filter(([k, v]) => v && ['search', 'type', 'category', 'shape', 'cut', 'color', 'clarity', 'caratMax', 'metal'].includes(k)).length > 0 && (
                 <div className="flex flex-wrap items-center gap-2 pt-6 pb-2 font-sans">
                   <span className="text-[10px] uppercase tracking-widest text-gray-500 mr-2 font-medium">Active Filters:</span>
                   {Object.entries(filters).map(([k, v]) => {
-                    if (!v || !['search', 'type', 'category', 'shape'].includes(k)) return null;
+                    if (!v || !['search', 'type', 'category', 'shape', 'cut', 'color', 'clarity', 'caratMax', 'metal'].includes(k)) return null;
                     const labelMap = {
                       search: `Keyword: ${v}`,
                       type: `Vault: ${v}`,
                       category: `Category: ${categories?.find(c => c._id === v)?.name || v}`,
-                      shape: `Silhouette: ${v}`
+                      shape: `Silhouette: ${v}`,
+                      cut: `Cut: ${v}`,
+                      color: `Color: Grade ${v}`,
+                      clarity: `Clarity: ${v}`,
+                      caratMax: `Max Carat: ${v} CT`,
+                      metal: `Metal: ${v}`
                     };
                     return (
-                      <span key={k} className="inline-flex items-center gap-2 px-3 py-1.5 bg-gold/10 border border-gold/30 text-gold text-[10px] uppercase tracking-widest rounded-none">
+                      <span key={k} className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#C5A880]/10 border border-[#C5A880]/30 text-[#C5A880] text-[10px] uppercase tracking-widest rounded-none">
                         <span>{labelMap[k]}</span>
                         <button
                           type="button"
                           onClick={() => handleFilterChange(k, '')}
-                          className="hover:text-white transition-colors ml-1 font-bold"
+                          className="hover:text-[#111111] dark:hover:text-white transition-colors ml-1 font-bold"
                         >
                           ×
                         </button>
@@ -212,30 +268,48 @@ export default function ProductList() {
                   <button
                     type="button"
                     onClick={() => {
-                      const reset = { ...filters, search: '', type: '', category: '', shape: '', minPrice: '', maxPrice: '', page: 1 };
+                      const reset = {
+                        ...filters,
+                        search: '',
+                        type: '',
+                        category: '',
+                        shape: '',
+                        minPrice: '',
+                        maxPrice: '',
+                        cut: '',
+                        color: '',
+                        clarity: '',
+                        caratMin: '',
+                        caratMax: '',
+                        metal: '',
+                        page: 1
+                      };
                       dispatch(setFilters(reset));
                       updateUrl(reset);
                       dispatch(fetchProducts(reset));
                     }}
-                    className="text-[10px] uppercase tracking-widest text-gray-400 hover:text-gold transition-colors ml-2 underline"
+                    className="text-[10px] uppercase tracking-widest text-gray-400 hover:text-[#C5A880] transition-colors ml-2 underline"
                   >
                     Clear All
                   </button>
                 </div>
               )}
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 pt-8">
+              {/* 4-column borderless grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8 pt-8">
                 {list.map((p) => {
                   const isWishlisted = wishlistItems.some((i) => i._id === p._id);
+                  const compareAtPrice = p.compareAtPrice || (p.price > 400000 ? Math.round(p.price * 1.15) : null);
                   return (
-                    <div key={p._id} className="card group flex flex-col justify-between overflow-hidden relative border border-gold/20 shadow-soft-lg dark:bg-[#15120F]">
-                      <div className="aspect-square bg-[#F5F5F5] dark:bg-black overflow-hidden relative">
+                    <div key={p._id} className="group flex flex-col justify-between overflow-hidden relative bg-transparent">
+                      {/* aspect-4/5 frame with borderless/shadowless design */}
+                      <div className="relative aspect-[4/5] bg-[#FBF9F6] dark:bg-black overflow-hidden rounded-lg">
                         <Link to={`/products/${p.slug}`} className="block w-full h-full">
                           {p.images?.[0] ? (
                             <img
                               src={getImageUrl(p.images[0])}
                               alt={p.name}
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                              className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                               onError={(e) => { e.target.onerror = null; e.target.style.display = 'none'; }}
                             />
                           ) : (
@@ -257,39 +331,40 @@ export default function ProductList() {
                               slug: p.slug,
                             }));
                           }}
-                          className="absolute top-4 right-4 w-10 h-10 bg-white/90 dark:bg-black/90 backdrop-blur-sm border border-gold/40 flex items-center justify-center text-gold shadow-md hover:scale-110 active:scale-95 transition-all focus:outline-none z-10"
+                          className="absolute top-4 right-4 w-9 h-9 bg-white/90 dark:bg-black/90 backdrop-blur-sm rounded-full flex items-center justify-center text-gray-700 dark:text-gray-300 hover:text-red-500 hover:scale-110 active:scale-95 transition-all focus:outline-none z-10 shadow-sm"
                           aria-label="Wishlist"
                           title={isWishlisted ? "Remove from Wishlist" : "Save to Wishlist"}
                         >
-                          <svg className={`w-5 h-5 stroke-1 ${isWishlisted ? 'fill-current text-gold' : 'fill-none'}`} stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className={`w-4.5 h-4.5 stroke-[1.25] ${isWishlisted ? 'fill-current text-red-500' : 'fill-none'}`} stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
                           </svg>
                         </button>
 
-                        <span className="absolute top-4 left-4 pill-badge shadow-sm">
-                          Maison
-                        </span>
+                        {/* Sale badge */}
+                        {compareAtPrice > p.price && (
+                          <span className="absolute top-4 left-4 bg-[#111111] dark:bg-gold text-white dark:text-black text-[9px] font-sans font-medium uppercase tracking-[0.25em] px-2.5 py-1 z-10 shadow-sm leading-none">
+                            Sale
+                          </span>
+                        )}
                       </div>
 
-                      <div className="p-6 flex flex-col justify-between flex-1 border-t border-gold/10">
-                        <div>
-                          <span className="font-sans text-[9px] uppercase tracking-[0.3em] text-gold font-medium block mb-1">Haute Joaillerie</span>
-                          <Link to={`/products/${p.slug}`}>
-                            <h3 className="font-display text-xl font-light dark:text-white line-clamp-1 group-hover:text-gold transition-colors">{p.name}</h3>
-                          </Link>
-                          {p.description && <p className="text-xs text-gray-500 line-clamp-2 mt-2 font-light leading-snug">{p.description}</p>}
-                        </div>
-
-                        <div className="pt-6 mt-6 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between">
-                          <span className="font-sans text-sm font-semibold tracking-wide dark:text-gold">
-                            ₹{Number(p.price).toLocaleString('en-IN')}
-                          </span>
-                          <Link
-                            to={`/products/${p.slug}`}
-                            className="font-sans text-[10px] uppercase tracking-[0.2em] font-bold text-gold hover:text-luxury-black dark:hover:text-white transition-colors"
-                          >
-                            Acquire →
-                          </Link>
+                      {/* Details block centered with serif titles */}
+                      <div className="pt-4 flex flex-col items-center text-center">
+                        <span className="text-[9px] uppercase tracking-[0.25em] text-gray-400 dark:text-gray-500 font-sans mb-1.5 block">
+                          {categories.find(c => c._id === p.category)?.name || 'High Joaillerie'}
+                        </span>
+                        <Link to={`/products/${p.slug}`} className="block w-full">
+                          <h3 className="font-serif text-lg font-normal tracking-wide text-[#111111] dark:text-white line-clamp-1 group-hover:text-[#C5A880] transition-colors leading-snug">
+                            {p.name}
+                          </h3>
+                        </Link>
+                        <div className="mt-1 text-sm font-sans font-medium text-[#C5A880] tracking-wider">
+                          ₹{Number(p.price).toLocaleString('en-IN')}
+                          {compareAtPrice > p.price && (
+                            <span className="ml-2 text-xs text-gray-400 line-through font-light">
+                              ₹{Number(compareAtPrice).toLocaleString('en-IN')}
+                            </span>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -298,7 +373,7 @@ export default function ProductList() {
               </div>
 
               {pagination.totalPages > 1 && (
-                <div className="flex justify-center items-center gap-4 mt-16 pt-8 border-t border-gold/20 font-sans text-xs">
+                <div className="flex justify-center items-center gap-4 mt-16 pt-8 border-t border-gray-200/60 dark:border-gray-800/60 font-sans text-xs">
                   <button
                     type="button"
                     className="btn-secondary disabled:opacity-30"

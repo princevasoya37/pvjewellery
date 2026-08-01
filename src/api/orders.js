@@ -1,16 +1,30 @@
-import client from './client';
+import axiosClient from './axiosClient';
 
-export async function createOrder(orderData) {
-  const { data } = await client.post('/orders', orderData);
-  return data;
+/**
+ * Create a new checkout order.
+ * @param {Object} payload
+ * @returns {Promise<Object>} The response data.
+ */
+export async function createOrder(payload) {
+  const response = await axiosClient.post('/orders', payload);
+  return response.data;
 }
 
+/**
+ * Get all orders of current user.
+ * @returns {Promise<Object>} The response data.
+ */
 export async function getMyOrders() {
-  const { data } = await client.get('/orders');
-  return data;
+  const response = await axiosClient.get('/orders');
+  return response.data;
 }
 
+/**
+ * Get details of a single order by ID.
+ * @param {string|number} id
+ * @returns {Promise<Object>} The response data.
+ */
 export async function getOrderById(id) {
-  const { data } = await client.get(`/orders/${id}`);
-  return data;
+  const response = await axiosClient.get(`/orders/${id}`);
+  return response.data;
 }

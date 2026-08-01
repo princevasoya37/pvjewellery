@@ -40,7 +40,7 @@ const orderSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 orderSchema.index({ user: 1, createdAt: -1 });
-orderSchema.index({ orderNumber: 1 });
+
 orderSchema.index({ status: 1 });
 
 export default mongoose.model('Order', orderSchema);

@@ -29,9 +29,9 @@ const productSchema = new mongoose.Schema({
   specs: { type: mongoose.Schema.Types.Mixed },
 }, {
   timestamps: true,
+  suppressReservedKeysWarning: true,
 });
 
-productSchema.index({ slug: 1 });
 productSchema.index({ type: 1, isActive: 1 });
 productSchema.index({ category: 1 });
 productSchema.index({ price: 1 });

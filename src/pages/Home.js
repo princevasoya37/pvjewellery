@@ -15,6 +15,7 @@ const SOLITAIRE_SHAPES = [
     clarity: 'VVS1',
     origin: 'Botswana',
     price: '19,75,000',
+    image: '/images/diamond_round.png',
     iconSvg: (
       <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
         <circle cx="12" cy="12" r="8" />
@@ -38,6 +39,7 @@ const SOLITAIRE_SHAPES = [
     clarity: 'VS1',
     origin: 'Canada',
     price: '14,20,000',
+    image: '/images/diamond_princess.png',
     iconSvg: (
       <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
         <rect x="5" y="5" width="14" height="14" transform="rotate(45 12 12)" rx="1" />
@@ -62,6 +64,7 @@ const SOLITAIRE_SHAPES = [
     clarity: 'FL',
     origin: 'South Africa',
     price: '24,50,000',
+    image: '/images/diamond_emerald.png',
     iconSvg: (
       <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
         <polygon points="7,3 17,3 21,7 21,17 17,21 7,21 3,17 3,7" />
@@ -85,6 +88,7 @@ const SOLITAIRE_SHAPES = [
     clarity: 'VVS2',
     origin: 'Australia',
     price: '16,80,000',
+    image: '/images/diamond_pear.png',
     iconSvg: (
       <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
         <path d="M12 3 C12 3 19 12 19 16.5 C19 20.08 15.865 22 12 22 C8.135 22 5 20.08 5 16.5 C5 12 12 3 12 3 Z" />
@@ -107,6 +111,7 @@ const SOLITAIRE_SHAPES = [
     clarity: 'VVS1',
     origin: 'Botswana',
     price: '19,75,000',
+    image: '/images/diamond_oval.png',
     iconSvg: (
       <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
         <ellipse cx="12" cy="12" rx="7" ry="10" />
@@ -189,6 +194,8 @@ export default function Home() {
   const [selectedShapeId, setSelectedShapeId] = useState('oval');
   const carouselRef = useRef(null);
   const selectedShape = SOLITAIRE_SHAPES.find(s => s.id === selectedShapeId) || SOLITAIRE_SHAPES[4];
+  const themeMode = useSelector((s) => s.theme?.themeMode || 'light');
+  const isDark = themeMode === 'dark';
 
   useEffect(() => {
     dispatch(fetchProducts({ limit: 12, sort: 'newest' }));
@@ -218,58 +225,73 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#FCFAF6] text-luxury-charcoal font-sans pb-24 overflow-hidden">
+    <div className={`min-h-screen font-sans pb-24 overflow-hidden transition-colors duration-500 ${
+      isDark ? 'bg-[#0D0A07] text-[#F9F6F0]' : 'bg-[#FBF9F6] text-[#111111]'
+    }`}>
       
-      {/* 1. Cinematic Luxury Hero Section */}
-      <section className="relative min-h-screen flex items-center bg-[#0D0A07] overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-transparent z-10 w-full md:w-3/4" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/50 z-10" />
+      {/* 1. Modern Minimal Luxury Hero Section */}
+      <section className={`relative min-h-screen flex items-center pt-24 pb-16 overflow-hidden transition-colors duration-500 ${
+        isDark ? 'bg-[#0D0A07]' : 'bg-[#FBF9F6]'
+      }`}>
+        {/* Subtle Decorative Background Glow */}
+        <div className={`absolute top-1/4 right-1/4 w-[400px] h-[400px] rounded-full blur-[120px] pointer-events-none z-0 ${
+          isDark ? 'bg-gold/10' : 'bg-gold/5'
+        }`} />
 
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105 opacity-70 animate-shimmer transition-transform duration-1000"
-          style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=1920&q=80)' }}
-        />
+        <div className="relative z-10 max-w-[1700px] mx-auto px-6 sm:px-12 lg:px-16 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
+            
+            {/* Left side: vast, widely spaced serif header, descriptive subtext, and underline "Explore Collection" button */}
+            <div className="lg:col-span-7 flex flex-col justify-center space-y-6 lg:space-y-8 animate-fadeIn text-left z-10">
+              <h1 className={`font-serif font-light text-5xl md:text-7xl lg:text-[84px] leading-[1.1] tracking-wide ${
+                isDark ? 'text-white' : 'text-[#111111]'
+              }`}>
+                Timeless Elegance,<br />
+                <span className="italic font-light text-gold font-serif">Crafted for You.</span>
+              </h1>
 
-        <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-gold/15 rounded-full blur-[140px] pointer-events-none z-10 animate-float" />
+              <p className={`font-sans text-sm md:text-base font-light max-w-lg leading-relaxed tracking-wide ${
+                isDark ? 'text-gray-300' : 'text-gray-600'
+              }`}>
+                A private maison of jewellers crafting heirlooms in 18-karat gold and ethically sourced diamonds — each piece a quiet promise of permanence.
+              </p>
 
-        <div className="relative z-20 max-w-[1700px] mx-auto px-6 sm:px-12 lg:px-16 w-full pt-28 sm:pt-32">
-          <div className="max-w-xl lg:max-w-2xl text-left space-y-8 animate-fadeIn">
-            <div className="flex items-center gap-4 text-gold text-xs font-sans uppercase tracking-[0.3em] font-medium">
-              <span className="w-12 h-[1.5px] bg-gold inline-block" />
-              <span>Maison PV • Est. 1987</span>
+              <div className="pt-4">
+                <Link
+                  to="/products"
+                  className={`group inline-flex items-center text-xs uppercase tracking-[0.25em] font-semibold relative py-2 ${
+                    isDark ? 'text-white' : 'text-[#111111]'
+                  }`}
+                >
+                  <span>Explore Collection</span>
+                  <span className={`absolute bottom-0 left-0 w-full h-[1.5px] transform scale-x-100 group-hover:scale-x-110 transition-transform duration-300 origin-left ${
+                    isDark ? 'bg-white' : 'bg-[#111111]'
+                  }`} />
+                </Link>
+              </div>
             </div>
 
-            <h1 className="font-serif text-5xl sm:text-7xl lg:text-[84px] font-normal text-white leading-[1.05] tracking-tight">
-              Timeless Elegance,<br />
-              <span className="italic font-light text-gold font-serif">Crafted for You.</span>
-            </h1>
-
-            <p className="font-sans text-sm sm:text-base font-light text-gray-300 max-w-lg leading-relaxed tracking-wide">
-              A private maison of jewellers crafting heirlooms in 18-karat gold and ethically sourced diamonds — each piece a quiet promise of permanence.
-            </p>
-
-            <div className="flex flex-col sm:flex-row items-center gap-6 pt-6 font-sans text-xs uppercase tracking-[0.25em] font-medium">
-              <Link
-                to="/products"
-                className="w-full sm:w-auto px-10 py-5 bg-white text-black flex items-center justify-center gap-4 hover:bg-gold transition-colors duration-300 shadow-2xl rounded-none"
-              >
-                <span>Shop the Collection</span>
-                <span className="text-base font-bold leading-none">↗</span>
-              </Link>
-              
-              <Link
-                to="/products?type=consultation"
-                className="w-full sm:w-auto px-10 py-5 bg-transparent border border-white/30 text-white flex items-center justify-center hover:bg-white hover:text-black transition-colors duration-300 backdrop-blur-sm rounded-none"
-              >
-                <span>Book a Private Viewing</span>
-              </Link>
+            {/* Right side: tall, vertical portrait image card with slightly softened corners and subtle scale animation on hover. No heavy card borders. */}
+            <div className="lg:col-span-5 flex justify-center w-full z-10">
+              <div className="group relative w-full max-w-[450px] aspect-[3/4] overflow-hidden rounded-2xl shadow-soft-lg bg-current/5">
+                <img
+                  src="https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?w=1000&auto=format&fit=crop&q=80"
+                  alt="Timeless Luxury Jewellery Portrait"
+                  className="w-full h-full object-cover transition-transform duration-700 ease-out-soft group-hover:scale-105"
+                  loading="eager"
+                />
+              </div>
             </div>
+
           </div>
         </div>
 
-        <div className="absolute bottom-10 right-8 sm:right-16 z-20 flex items-center gap-4 font-sans text-[10px] uppercase tracking-[0.4em] text-gray-400">
+        {/* Scroll Indicator */}
+        <div className={`absolute bottom-10 right-8 sm:right-16 z-20 flex items-center gap-4 font-sans text-[10px] uppercase tracking-[0.4em] ${
+          isDark ? 'text-gray-500' : 'text-gray-400'
+        }`}>
           <span>Scroll</span>
-          <span className="w-16 h-[1px] bg-gray-500 inline-block" />
+          <span className={`w-16 h-[1px] inline-block ${isDark ? 'bg-gray-700' : 'bg-gray-300'}`} />
         </div>
       </section>
 
@@ -454,232 +476,224 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 6. Bespoke Custom Studio & Solitaire Configurator (Exactly replicating User UI) */}
-      <section className="bg-[#0B0908] py-20 sm:py-32 border-t border-b border-gold/20 relative overflow-hidden font-sans">
-        {/* Subtle radial background glow */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.08)_0%,transparent_70%)] pointer-events-none" />
-
+      {/* 6. Bespoke Custom Studio & Solitaire Configurator (Redesigned Quiet-Luxury Aesthetic) */}
+      <section className={`py-24 sm:py-32 relative overflow-hidden font-sans transition-colors duration-500 border-t border-b ${
+        isDark ? 'bg-[#111111] text-[#F9F6F0] border-white/5' : 'bg-[#FBF9F6] text-[#111111] border-black/5'
+      }`}>
         <div className="max-w-[1550px] mx-auto px-6 sm:px-12 lg:px-16 relative z-10">
           
-          {/* Header Area matching screenshot */}
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16 sm:mb-20">
-            <div className="space-y-1">
-              <h2 className="text-5xl sm:text-7xl lg:text-[80px] font-serif font-normal text-white tracking-tight leading-[1.05]">
-                Compose your <br />
-                <span className="italic font-light text-gold font-serif">eternal solitaire.</span>
-              </h2>
-            </div>
-            <p className="text-xs sm:text-sm text-gray-400 font-light max-w-sm leading-relaxed tracking-wide">
-              A real-time bespoke commission — from raw stone to finished heirloom — guided by our master jewellers in Mumbai.
-            </p>
+          {/* Header Area: Title on the left with generous letter spacing and wide margins */}
+          <div className="mb-16 sm:mb-20 max-w-4xl text-left">
+            <span className="font-sans text-[10px] sm:text-xs uppercase tracking-[0.4em] text-[#767676] font-medium block mb-4">
+              Bespoke Studio
+            </span>
+            <h2 className={`text-5xl sm:text-7xl lg:text-[76px] font-serif font-light tracking-[0.02em] leading-[1.1] ${
+              isDark ? 'text-white' : 'text-[#111111]'
+            }`}>
+              Compose your <br />
+              <span className="italic font-light text-[#C5A880] font-serif">eternal solitaire.</span>
+            </h2>
           </div>
 
-          {/* 3-Column Configurator Area */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+          {/* Interactive Diamond Shape Selector: Clean borderless text tags with golden underline animations when selected */}
+          <div className={`flex flex-wrap items-center gap-x-8 gap-y-4 border-b pb-6 mb-16 ${
+            isDark ? 'border-white/10' : 'border-black/5'
+          }`}>
+            {SOLITAIRE_SHAPES.map((shape) => {
+              const isSelected = shape.id === selectedShapeId;
+              return (
+                <button
+                  key={shape.id}
+                  onClick={() => setSelectedShapeId(shape.id)}
+                  className={`group relative pb-4 text-xs sm:text-sm uppercase tracking-[0.3em] font-semibold transition-colors duration-300 ${
+                    isSelected 
+                      ? 'text-[#C5A880]' 
+                      : isDark ? 'text-gray-500 hover:text-gray-200' : 'text-gray-400 hover:text-gray-800'
+                  }`}
+                >
+                  {shape.name}
+                  {/* Subtle golden underline animation */}
+                  <span className={`absolute bottom-0 left-0 w-full h-[1.5px] bg-[#C5A880] transition-transform duration-300 origin-left ${
+                    isSelected ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-50'
+                  }`} />
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Configurator Area: 2 Columns */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
             
-            {/* Column 1: Shapes List (3 cols) */}
-            <div className="lg:col-span-3 flex flex-col gap-3.5">
-              {SOLITAIRE_SHAPES.map((shape) => {
-                const isSelected = shape.id === selectedShapeId;
-                return (
-                  <div
-                    key={shape.id}
-                    onClick={() => setSelectedShapeId(shape.id)}
-                    className={`group relative flex items-center gap-5 p-4 sm:p-5 border transition-all duration-500 cursor-pointer ${
-                      isSelected
-                        ? 'bg-[#181411] border-gold text-white shadow-[0_0_20px_rgba(212,175,55,0.15)] scale-[1.02]'
-                        : 'bg-[#110E0C]/80 border-white/10 text-gray-400 hover:border-gold/40 hover:text-gray-200'
-                    }`}
-                  >
-                    {/* Glowing highlight bar on left for selected */}
-                    {isSelected && (
-                      <span className="absolute left-0 top-0 bottom-0 w-1 bg-gold animate-pulse" />
-                    )}
+            {/* Column 1: Live Preview (glassmorphism container with soft shadow, no target frames or corner brackets) */}
+            <div className="lg:col-span-7 flex justify-center w-full">
+              <div className={`relative w-full max-w-[540px] aspect-square rounded-2xl flex items-center justify-center p-8 transition-all duration-500 ${
+                isDark 
+                  ? 'bg-white/[0.02] backdrop-blur-xl border border-white/5 shadow-[0_24px_80px_rgba(0,0,0,0.5)]' 
+                  : 'bg-white/[0.60] backdrop-blur-xl border border-[#C5A880]/10 shadow-[0_24px_80px_rgba(10,10,10,0.04)]'
+              }`}>
+                {/* Concentric subtle background circles (quiet aesthetics) */}
+                <div className={`absolute w-[80%] aspect-square rounded-full border border-current/[0.02] pointer-events-none`} />
+                <div className={`absolute w-[55%] aspect-square rounded-full border border-current/[0.03] pointer-events-none`} />
+                
+                {/* 3D Diamond Render Placeholder */}
+                <img
+                  src={selectedShape.image}
+                  alt={`${selectedShape.name} Diamond Render`}
+                  className="w-[72%] h-[72%] object-contain select-none pointer-events-none drop-shadow-[0_15px_45px_rgba(197,168,128,0.15)] animate-float z-10"
+                />
 
-                    {/* Icon container */}
-                    <div className={`w-12 h-12 shrink-0 border flex items-center justify-center transition-all duration-500 ${
-                      isSelected
-                        ? 'border-gold text-gold bg-gold/10'
-                        : 'border-white/10 text-gray-500 group-hover:border-gold/40 group-hover:text-gold/80'
-                    }`}>
-                      {shape.iconSvg}
-                    </div>
+                {/* Central Display Tag */}
+                <div className="absolute bottom-6 left-6 font-sans text-[10px] uppercase tracking-[0.3em] text-[#767676] font-medium">
+                  {selectedShape.slug} / Est. ₹{selectedShape.price}
+                </div>
+              </div>
+            </div>
 
-                    {/* Shape Info */}
-                    <div className="flex-1 min-w-0">
-                      <div className={`font-serif text-lg tracking-wide transition-colors duration-300 ${
-                        isSelected ? 'text-gold font-medium' : 'text-gray-200 group-hover:text-white'
-                      }`}>
-                        {shape.name}
-                      </div>
-                      <div className={`text-[9px] uppercase tracking-[0.25em] font-sans truncate mt-1 transition-colors duration-300 ${
-                        isSelected ? 'text-gray-300 font-medium' : 'text-gray-500 group-hover:text-gray-400'
-                      }`}>
-                        {shape.tagline}
-                      </div>
-                    </div>
+            {/* Column 2: Specifications & CTA */}
+            <div className="lg:col-span-5 flex flex-col justify-between h-full space-y-10 text-left">
+              <div>
+                <h3 className={`font-serif text-3xl font-light mb-8 ${
+                  isDark ? 'text-white' : 'text-[#111111]'
+                }`}>
+                  Bespoke Specifications
+                </h3>
+                
+                {/* Clean, transparent spec grid using thin light dividers */}
+                <div className={`grid grid-cols-2 gap-x-8 gap-y-8 border-t border-b py-8 ${
+                  isDark ? 'border-white/10' : 'border-black/5'
+                }`}>
+                  <div className="space-y-1.5">
+                    <span className="font-sans text-[10px] uppercase tracking-[0.3em] text-[#767676] block font-medium">
+                      Carat Weight
+                    </span>
+                    <span className={`font-serif text-xl ${isDark ? 'text-[#F9F6F0]' : 'text-[#111111]'}`}>
+                      {selectedShape.carat} ct
+                    </span>
                   </div>
-                );
-              })}
-            </div>
 
-            {/* Column 2: Live Preview Studio (6 cols) */}
-            <div className="lg:col-span-6 relative aspect-square w-full bg-[#0D0B09] border border-gold/20 flex flex-col justify-between p-6 sm:p-8 shadow-2xl overflow-hidden">
-              {/* Corner Bracket Accents */}
-              <div className="absolute top-4 left-4 w-4 h-4 border-t border-l border-gold/40 pointer-events-none" />
-              <div className="absolute top-4 right-4 w-4 h-4 border-t border-r border-gold/40 pointer-events-none" />
-              <div className="absolute bottom-4 left-4 w-4 h-4 border-b border-l border-gold/40 pointer-events-none" />
-              <div className="absolute bottom-4 right-4 w-4 h-4 border-b border-r border-gold/40 pointer-events-none" />
+                  <div className="space-y-1.5">
+                    <span className="font-sans text-[10px] uppercase tracking-[0.3em] text-[#767676] block font-medium">
+                      Colour Grade
+                    </span>
+                    <span className={`font-serif text-xl ${isDark ? 'text-[#F9F6F0]' : 'text-[#111111]'}`}>
+                      {selectedShape.colour} Grade
+                    </span>
+                  </div>
 
-              {/* Concentric Radar Rings & Glow */}
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
-                <div className="absolute w-[90%] aspect-square rounded-full border border-gold/[0.08]" />
-                <div className="absolute w-[70%] aspect-square rounded-full border border-gold/[0.12]" />
-                <div className="absolute w-[50%] aspect-square rounded-full border border-gold/[0.16]" />
-                <div className="absolute w-[30%] aspect-square rounded-full border border-gold/[0.22]" />
-                <div className="absolute w-[12%] aspect-square rounded-full border border-gold/[0.3]" />
-                <div className="absolute w-[40%] aspect-square rounded-full bg-gold/10 blur-[80px]" />
-              </div>
+                  <div className="space-y-1.5">
+                    <span className="font-sans text-[10px] uppercase tracking-[0.3em] text-[#767676] block font-medium">
+                      Clarity Grade
+                    </span>
+                    <span className={`font-serif text-xl ${isDark ? 'text-[#F9F6F0]' : 'text-[#111111]'}`}>
+                      {selectedShape.clarity} (GIA)
+                    </span>
+                  </div>
 
-              {/* Top Bar */}
-              <div className="flex items-center justify-between text-[10px] font-sans uppercase tracking-[0.3em] text-gray-400 relative z-10 font-medium">
-                <span>[ LIVE PREVIEW</span>
-                <div className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse shadow-[0_0_8px_#D4AF37]" />
-                  <span>• RENDERING - 4K ]</span>
+                  <div className="space-y-1.5">
+                    <span className="font-sans text-[10px] uppercase tracking-[0.3em] text-[#767676] block font-medium">
+                      Ethical Origin
+                    </span>
+                    <span className={`font-serif text-xl ${isDark ? 'text-[#F9F6F0]' : 'text-[#111111]'}`}>
+                      {selectedShape.origin}
+                    </span>
+                  </div>
                 </div>
               </div>
 
-              {/* Absolute Animated Center SVG */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 w-48 h-48 sm:w-64 sm:h-64 flex items-center justify-center transition-all duration-700 animate-pulse">
-                {selectedShape.previewSvg}
-              </div>
-
-              {/* Bottom Bar */}
-              <div className="flex items-end justify-between relative z-10 border-t border-white/10 pt-5 mt-auto">
-                <div>
-                  <span className="text-[9px] font-sans uppercase tracking-[0.3em] text-gray-500 block mb-1">
-                    SELECTED
-                  </span>
-                  <span className="text-2xl sm:text-3xl font-serif text-white tracking-wide">
-                    {selectedShape.slug}
-                  </span>
-                </div>
-
-                <div className="text-right">
-                  <span className="text-[9px] font-sans uppercase tracking-[0.3em] text-gray-500 block mb-1">
-                    EST. PRICE
-                  </span>
-                  <span className="text-xl sm:text-2xl font-sans font-light text-gold tracking-wider">
-                    ₹ {selectedShape.price} ]
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Column 3: Specifications & CTA (3 cols) */}
-            <div className="lg:col-span-3 flex flex-col gap-4">
-              
-              {/* Spec Cards */}
-              <div className="bg-[#12100E] border border-white/10 p-5 flex flex-col justify-between">
-                <div className="flex items-center justify-between text-[10px] font-sans uppercase tracking-[0.3em] text-gray-500 mb-3">
-                  <span>CARAT</span>
-                  <span>CT</span>
-                </div>
-                <div className="text-2xl sm:text-3xl font-serif text-white font-light tracking-wide">
-                  {selectedShape.carat}
-                </div>
-              </div>
-
-              <div className="bg-[#12100E] border border-white/10 p-5 flex flex-col justify-between">
-                <div className="flex items-center justify-between text-[10px] font-sans uppercase tracking-[0.3em] text-gray-500 mb-3">
-                  <span>COLOUR</span>
-                  <span>GRADE</span>
-                </div>
-                <div className="text-2xl sm:text-3xl font-serif text-white font-light tracking-wide">
-                  {selectedShape.colour}
-                </div>
-              </div>
-
-              <div className="bg-[#12100E] border border-white/10 p-5 flex flex-col justify-between">
-                <div className="flex items-center justify-between text-[10px] font-sans uppercase tracking-[0.3em] text-gray-500 mb-3">
-                  <span>CLARITY</span>
-                  <span>GIA</span>
-                </div>
-                <div className="text-2xl sm:text-3xl font-serif text-white font-light tracking-wide">
-                  {selectedShape.clarity}
-                </div>
-              </div>
-
-              <div className="bg-[#12100E] border border-white/10 p-5 flex flex-col justify-between">
-                <div className="flex items-center justify-between text-[10px] font-sans uppercase tracking-[0.3em] text-gray-500 mb-3">
-                  <span>ORIGIN</span>
-                  <span>ETHICAL</span>
-                </div>
-                <div className="text-2xl sm:text-3xl font-serif text-white font-light tracking-wide">
-                  {selectedShape.origin}
-                </div>
-              </div>
-
-              {/* Reserve Button */}
+              {/* Action Button: Sleek, wide champagne-gold button with tracking-widest text */}
               <Link
                 to={`/products?shape=${selectedShape.slug}`}
-                className="w-full mt-2 py-5 px-8 bg-[#D4AF37] hover:bg-white text-[#0A0A0A] font-sans text-xs uppercase tracking-[0.25em] font-semibold flex items-center justify-between transition-all duration-300 shadow-[0_0_30px_rgba(212,175,55,0.2)] group"
+                className="w-full py-5 px-8 bg-[#C5A880] hover:bg-[#b59871] text-white font-sans text-xs uppercase tracking-[0.3em] font-semibold flex items-center justify-center gap-3 transition-colors duration-500 shadow-sm"
               >
                 <span>RESERVE THIS STONE</span>
-                <span className="text-lg font-bold group-hover:translate-x-1 transition-transform">↗</span>
+                <span className="text-sm font-light">→</span>
               </Link>
 
             </div>
             
           </div>
 
-          {/* Build steps explanation underneath */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 pt-24 mt-24 border-t border-gold/20 relative z-10">
-            {BUILD_STEPS.map((step) => (
-              <div key={step.step} className="space-y-4">
-                <div className="w-14 h-14 border border-gold/40 bg-black text-gold font-serif text-lg font-light flex items-center justify-center shadow-sm">
-                  {step.step}
-                </div>
-                <h3 className="font-display text-2xl font-light text-white">{step.title}</h3>
-                <p className="text-xs text-gray-400 font-light leading-relaxed font-sans">{step.desc}</p>
-              </div>
-            ))}
-          </div>
-
         </div>
       </section>
 
-      {/* 7. Premium Editorial Customer Testimonials */}
-      <section className="bg-luxury-black text-white py-24 px-4 relative overflow-hidden border-t border-b border-gold/20">
-        <div className="absolute inset-0 bg-[radial-gradient(#D4AF37_1px,transparent_1px)] [background-size:32px_32px] opacity-10" />
-        
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <span className="font-sans text-xs uppercase tracking-[0.4em] text-gold font-semibold block mb-4">
+      {/* 3. Process Steps Section (Delicate, Minimalist 3-Column Grid) */}
+      <section className={`py-24 sm:py-32 border-b transition-colors duration-500 ${
+        isDark ? 'bg-[#0D0A07] border-white/5' : 'bg-[#FBF9F6] border-black/5'
+      }`}>
+        <div className="max-w-[1550px] mx-auto px-6 sm:px-12 lg:px-16">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-16 lg:gap-24">
+            {BUILD_STEPS.map((step) => (
+              <div key={step.step} className="space-y-6 flex flex-col items-start text-left">
+                {/* Delicate, thin gold numbers */}
+                <span className="font-serif text-4xl sm:text-5xl font-light text-[#C5A880] tracking-wider block">
+                  {step.step}
+                </span>
+                
+                {/* Elegant serif subheadings */}
+                <h3 className={`font-serif text-2xl sm:text-3xl font-light tracking-wide ${
+                  isDark ? 'text-[#F9F6F0]' : 'text-[#111111]'
+                }`}>
+                  {step.title}
+                </h3>
+                
+                {/* Clean spacing with no background/border container */}
+                <p className={`font-sans text-sm font-light leading-relaxed tracking-wide ${
+                  isDark ? 'text-gray-400' : 'text-[#767676]'
+                }`}>
+                  {step.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 7. Premium Editorial Customer Testimonials (Words of Reverence) */}
+      <section className={`py-28 sm:py-36 px-6 relative overflow-hidden transition-colors duration-500 border-b ${
+        isDark ? 'bg-[#111111] text-[#F9F6F0] border-white/5' : 'bg-[#FBF9F6] text-[#111111] border-black/5'
+      }`}>
+        <div className="max-w-5xl mx-auto text-center relative z-10">
+          <span className="font-sans text-[10px] sm:text-xs uppercase tracking-[0.4em] text-[#767676] font-semibold block mb-4">
             Maison Client Experience
           </span>
-          <h2 className="font-display text-4xl sm:text-6xl font-light mb-12 font-serif">
+          <h2 className={`font-serif text-4xl sm:text-5xl lg:text-6xl font-light tracking-wide mb-16 ${
+            isDark ? 'text-white' : 'text-[#111111]'
+          }`}>
             Words of Reverence
           </h2>
 
-          <div className="min-h-[200px] flex flex-col justify-center items-center px-4">
-            <span className="text-6xl text-gold font-serif block leading-none mb-4">“</span>
-            <blockquote className="text-xl sm:text-3xl font-display font-light italic leading-relaxed text-gray-200 mb-8 max-w-3xl">
+          <div className="min-h-[220px] flex flex-col justify-center items-center px-4">
+            {/* Subtle champagne gold quote mark accent */}
+            <span className="text-7xl text-[#C5A880]/30 font-serif block leading-none mb-6">“</span>
+            
+            {/* Display quote in an italicized, elegant serif font */}
+            <blockquote className={`text-xl sm:text-3xl lg:text-[34px] font-serif font-light italic leading-relaxed max-w-4xl mb-12 ${
+              isDark ? 'text-gray-200' : 'text-gray-800'
+            }`}>
               {TESTIMONIALS[testimonialIndex].quote}
             </blockquote>
-            <div className="font-sans uppercase tracking-[0.2em] text-xs">
-              <span className="text-gold font-semibold block">{TESTIMONIALS[testimonialIndex].author}</span>
-              <span className="text-gray-500 text-[10px]">{TESTIMONIALS[testimonialIndex].location}</span>
+            
+            {/* Minimalist tracking-widest uppercase font for author and location */}
+            <div className="font-sans text-[11px] uppercase tracking-[0.35em] space-y-2">
+              <span className="text-[#C5A880] font-semibold block">
+                {TESTIMONIALS[testimonialIndex].author}
+              </span>
+              <span className="text-[#767676] text-[10px] block">
+                {TESTIMONIALS[testimonialIndex].location}
+              </span>
             </div>
           </div>
 
-          <div className="flex justify-center gap-3 mt-12">
+          {/* Testimonial Slider Controls */}
+          <div className="flex justify-center gap-4 mt-16">
             {TESTIMONIALS.map((_, i) => (
               <button
                 key={i}
                 type="button"
                 onClick={() => setTestimonialIndex(i)}
-                className={`w-12 h-1 transition-all duration-300 focus:outline-none ${i === testimonialIndex ? 'bg-gold' : 'bg-gray-700'}`}
+                className={`w-10 h-[1.5px] transition-all duration-500 focus:outline-none ${
+                  i === testimonialIndex ? 'bg-[#C5A880]' : isDark ? 'bg-white/10 hover:bg-white/30' : 'bg-black/10 hover:bg-black/30'
+                }`}
                 aria-label={`Testimonial ${i + 1}`}
               />
             ))}
