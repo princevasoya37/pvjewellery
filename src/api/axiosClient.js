@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 // Get backend API base URL from process.env for Create React App or import.meta.env for Vite
-const baseURL = process.env.REACT_APP_API_BASE_URL || process.env.REACT_APP_API_URL || '/api';
+const rawBaseURL = process.env.REACT_APP_API_BASE_URL || process.env.REACT_APP_API_URL || '/api';
+const baseURL = rawBaseURL.replace(/\/+$/, '');
 
 /**
  * Configured Axios instance with request/response interceptors for auth.

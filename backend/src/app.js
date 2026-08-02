@@ -11,11 +11,28 @@ import orderRoutes from './routes/orderRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 
 const app = express();
-app.set('trust proxy', 1); // Trust first proxy (e.g., for local development)
-const frontendUrl = process.env.FRONTEND_URL || config.get('frontendUrl');
+app.set('trust proxy', 1); // Trust proxy on Render / Cloudflare
+const rawFrontendUrl = process.env.FRONTEND_URL || config.get('frontendUrl');
+const frontendUrl = rawFrontendUrl.replace(/\/+$/, '');
+
+const allowedOrigins = [
+  frontendUrl,
+  'http://127.0.0.1:3000',
+  'http://localhost:3000',
+].filter(Boolean);
 
 app.use(helmet());
-app.use(cors({ origin: [frontendUrl, 'http://127.0.0.1:3000', 'http://localhost:3000'], credentials: true }));
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    const sanitizedOrigin = origin.replace(/\/+$/, '');
+    if (allowedOrigins.includes(sanitizedOrigin) || sanitizedOrigin.endsWith('.vercel.app')) {
+      return callback(null, true);
+    }
+    return callback(new Error(`CORS Error: Origin ${origin} not allowed`));
+  },
+  credentials: true,
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

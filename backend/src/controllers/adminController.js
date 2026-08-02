@@ -1,10 +1,16 @@
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
 import Product from '../models/Product.js';
 import Category from '../models/Category.js';
 import Order from '../models/Order.js';
 import Coupon from '../models/Coupon.js';
 import User from '../models/User.js';
 import * as adminProductService from '../services/adminProductService.js';
-import { upload } from '../middleware/uploadLocal.js';
+import { upload as uploadCloudinaryMiddleware, uploadToCloudinary, isConfigured as isCloudinaryConfigured } from '../middleware/uploadCloudinary.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export async function getDashboardStats(req, res) {
   try {
@@ -30,17 +36,33 @@ export async function getDashboardStats(req, res) {
 
 // ——— Upload image (single) ———
 export function uploadImageMiddleware() {
-  return upload.single('image');
+  return uploadCloudinaryMiddleware.single('image');
 }
 
 export async function uploadImage(req, res) {
   try {
-    if (!req.file || !req.file.filename) return res.status(400).json({ message: 'No image file' });
-    // Return relative path so frontend can use proxy or prepend API origin
-    const relativePath = `/uploads/products/${req.file.filename}`;
+    if (!req.file) return res.status(400).json({ message: 'No image file' });
+
+    // If Cloudinary configured (Production), upload to Cloudinary for persistence
+    if (isCloudinaryConfigured) {
+      const result = await uploadToCloudinary(req.file.buffer, 'products');
+      return res.json({
+        url: result.secure_url,
+        fullUrl: result.secure_url,
+        filename: result.public_id,
+      });
+    }
+
+    // Local development fallback
+    const filename = `${Date.now()}-${(req.file.originalname || 'image').replace(/[/\\]/g, '-')}`;
+    const uploadsDir = path.join(__dirname, '..', '..', 'uploads', 'products');
+    fs.mkdirSync(uploadsDir, { recursive: true });
+    fs.writeFileSync(path.join(uploadsDir, filename), req.file.buffer);
+
+    const relativePath = `/uploads/products/${filename}`;
     const base = process.env.API_BASE_URL || process.env.BASE_URL || `${req.protocol}://${req.get('host')}`;
     const fullUrl = `${base.replace(/\/$/, '')}${relativePath}`;
-    return res.json({ url: relativePath, fullUrl, filename: req.file.filename });
+    return res.json({ url: relativePath, fullUrl, filename });
   } catch (err) {
     return res.status(500).json({ message: err.message || 'Upload failed' });
   }
