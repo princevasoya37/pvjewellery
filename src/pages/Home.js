@@ -194,7 +194,19 @@ const HERO_SLIDES = [
     subtitle: 'A private maison of jewellers crafting heirlooms in 18-karat champagne gold and ethically sourced diamonds.',
     image: '/images/hero_landscape_1.png',
     primaryCta: { label: 'Explore Solitaires', link: '/products?type=engagement' },
-    secondaryCta: { label: 'Discover Atelier', link: '/products?type=custom' }
+    secondaryCta: { label: 'Discover Atelier', link: '/products?type=custom' },
+    theme: {
+      accentHex: '#D4AF37',
+      highlightColor: '#F3E5AB',
+      badgeBg: 'rgba(212, 175, 55, 0.18)',
+      badgeBorder: 'rgba(212, 175, 55, 0.5)',
+      badgeText: '#F3E5AB',
+      primaryBtnBg: 'linear-gradient(135deg, #D4AF37 0%, #B38F24 100%)',
+      primaryBtnText: '#000000',
+      secondaryBtnBorder: 'rgba(243, 229, 171, 0.5)',
+      secondaryBtnText: '#FFFFFF',
+      overlayGradient: 'from-black/85 via-black/45 to-transparent'
+    }
   },
   {
     id: 2,
@@ -204,7 +216,19 @@ const HERO_SLIDES = [
     subtitle: 'Hand-selected Colombian emeralds paired with VVS brilliant-cut diamonds forged by master artisans.',
     image: '/images/hero_landscape_2.png',
     primaryCta: { label: 'View Royal Emeralds', link: '/products?type=high-jewellery' },
-    secondaryCta: { label: 'Explore Collections', link: '/products' }
+    secondaryCta: { label: 'Explore Collections', link: '/products' },
+    theme: {
+      accentHex: '#50C878',
+      highlightColor: '#A7F3D0',
+      badgeBg: 'rgba(80, 200, 120, 0.18)',
+      badgeBorder: 'rgba(80, 200, 120, 0.5)',
+      badgeText: '#A7F3D0',
+      primaryBtnBg: 'linear-gradient(135deg, #059669 0%, #046C4E 100%)',
+      primaryBtnText: '#FFFFFF',
+      secondaryBtnBorder: 'rgba(167, 243, 208, 0.5)',
+      secondaryBtnText: '#FFFFFF',
+      overlayGradient: 'from-[#021A10]/90 via-[#021A10]/50 to-transparent'
+    }
   },
   {
     id: 3,
@@ -214,7 +238,19 @@ const HERO_SLIDES = [
     subtitle: 'Deep royal blue Ceylon sapphires encased in delicate brilliant diamond halos, reflecting cosmic radiance.',
     image: '/images/hero_landscape_3.png',
     primaryCta: { label: 'Explore Sapphires', link: '/products?type=gemstones' },
-    secondaryCta: { label: 'Maison Journal', link: '/products?type=journal' }
+    secondaryCta: { label: 'Maison Journal', link: '/products?type=journal' },
+    theme: {
+      accentHex: '#38B6FF',
+      highlightColor: '#BFDBFE',
+      badgeBg: 'rgba(56, 182, 255, 0.18)',
+      badgeBorder: 'rgba(56, 182, 255, 0.5)',
+      badgeText: '#BFDBFE',
+      primaryBtnBg: 'linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)',
+      primaryBtnText: '#FFFFFF',
+      secondaryBtnBorder: 'rgba(191, 219, 254, 0.5)',
+      secondaryBtnText: '#FFFFFF',
+      overlayGradient: 'from-[#041226]/90 via-[#041226]/50 to-transparent'
+    }
   },
   {
     id: 4,
@@ -224,7 +260,19 @@ const HERO_SLIDES = [
     subtitle: 'GIA-certified, ethically flawless diamonds set in handcrafted royal platinum and champagne gold.',
     image: '/images/hero_landscape_4.png',
     primaryCta: { label: 'Book Consultation', link: '/account' },
-    secondaryCta: { label: 'Solitaire Vault', link: '/products?type=engagement' }
+    secondaryCta: { label: 'Solitaire Vault', link: '/products?type=engagement' },
+    theme: {
+      accentHex: '#E0A96D',
+      highlightColor: '#FDE68A',
+      badgeBg: 'rgba(224, 169, 109, 0.18)',
+      badgeBorder: 'rgba(224, 169, 109, 0.5)',
+      badgeText: '#FDE68A',
+      primaryBtnBg: 'linear-gradient(135deg, #E0A96D 0%, #C38B52 100%)',
+      primaryBtnText: '#000000',
+      secondaryBtnBorder: 'rgba(253, 230, 138, 0.5)',
+      secondaryBtnText: '#FFFFFF',
+      overlayGradient: 'from-black/85 via-black/45 to-transparent'
+    }
   },
   {
     id: 5,
@@ -234,7 +282,19 @@ const HERO_SLIDES = [
     subtitle: 'Handcrafted 18k and 24k gold masterwork, echoing three generations of maison heritage.',
     image: '/images/hero_landscape_5.png',
     primaryCta: { label: 'Discover Heritage Gold', link: '/products?type=gold' },
-    secondaryCta: { label: 'Explore Vaults', link: '/products' }
+    secondaryCta: { label: 'Explore Vaults', link: '/products' },
+    theme: {
+      accentHex: '#FFB800',
+      highlightColor: '#FCD34D',
+      badgeBg: 'rgba(255, 184, 0, 0.18)',
+      badgeBorder: 'rgba(255, 184, 0, 0.5)',
+      badgeText: '#FCD34D',
+      primaryBtnBg: 'linear-gradient(135deg, #D97706 0%, #B45309 100%)',
+      primaryBtnText: '#FFFFFF',
+      secondaryBtnBorder: 'rgba(252, 211, 77, 0.5)',
+      secondaryBtnText: '#FFFFFF',
+      overlayGradient: 'from-[#1A1202]/90 via-[#1A1202]/50 to-transparent'
+    }
   }
 ];
 
@@ -250,6 +310,8 @@ export default function Home() {
   const selectedShape = SOLITAIRE_SHAPES.find(s => s.id === selectedShapeId) || SOLITAIRE_SHAPES[4];
   const themeMode = useSelector((s) => s.theme?.themeMode || 'light');
   const isDark = themeMode === 'dark';
+
+  const activeSlide = HERO_SLIDES[currentSlide];
 
   useEffect(() => {
     dispatch(fetchProducts({ limit: 12, sort: 'newest' }));
@@ -293,7 +355,7 @@ export default function Home() {
       
       {/* 1. Ultra-Luxury Hero Auto-Carousel Section */}
       <section 
-        className="relative w-full min-h-[72vh] sm:min-h-[80vh] lg:min-h-[86vh] overflow-hidden flex items-center pt-16 bg-[#0D0A07]"
+        className="relative w-full min-h-[80vh] sm:min-h-[85vh] lg:min-h-[88vh] overflow-hidden flex items-end sm:items-center pt-16 sm:pt-20 bg-[#0D0A07]"
       >
         {/* Carousel Background Slides with Smooth Ken-Burns Zoom & HD Clarity */}
         {HERO_SLIDES.map((slide, index) => {
@@ -305,81 +367,105 @@ export default function Home() {
                 isCurrent ? 'opacity-100 z-10 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none'
               }`}
             >
-              {/* Ultra-HD Widescreen Landscape Background Image with Vibrant Brightness */}
+              {/* Ultra-HD Widescreen Landscape Background Image (Fully Visible on Mobile & Desktop) */}
               <div className="absolute inset-0 overflow-hidden">
                 <img
                   src={slide.image}
                   alt={slide.title}
-                  className={`w-full h-full object-cover object-center transform transition-transform duration-[7000ms] ease-out ${
+                  className={`w-full h-full object-cover object-top sm:object-center transform transition-transform duration-[7000ms] ease-out ${
                     isCurrent ? 'scale-105' : 'scale-100'
                   }`}
-                  style={{ filter: 'brightness(1.08) contrast(1.05)', imageRendering: 'crisp-edges' }}
+                  style={{ filter: 'brightness(1.06) contrast(1.04)', imageRendering: 'crisp-edges' }}
                   loading={index === 0 ? 'eager' : 'lazy'}
                 />
               </div>
 
-              {/* Light Subtle Gradient Overlays to keep background 100% bright & vibrant */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/25 to-transparent z-10" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent z-10" />
+              {/* Dynamic Theme Gradient Overlays (Light on Top so background image stays 100% visible) */}
+              <div className={`absolute inset-0 bg-gradient-to-r ${slide.theme.overlayGradient} z-10 hidden sm:block`} />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent z-10 sm:hidden" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10 hidden sm:block" />
             </div>
           );
         })}
 
-        {/* Hero Content Container */}
-        <div className="relative z-20 max-w-[1700px] mx-auto px-6 sm:px-12 lg:px-16 w-full text-white">
-          <div className="max-w-3xl space-y-6 sm:space-y-8 animate-fadeIn text-left">
+        {/* Hero Content Container (Unobstructed Image View on Mobile, Glass Card on Desktop) */}
+        <div className="relative z-20 max-w-[1700px] mx-auto px-4 sm:px-8 lg:px-16 w-full text-white mt-auto sm:my-auto pb-8 sm:py-12">
+          <div className="max-w-xl sm:max-w-2xl lg:max-w-3xl sm:backdrop-blur-md sm:bg-black/35 sm:border sm:border-white/15 p-2 sm:p-10 lg:p-12 sm:rounded-xl sm:shadow-[0_20px_50px_rgba(0,0,0,0.6)] space-y-3.5 sm:space-y-7 transition-all duration-700">
             
-            {/* Category Pill Badge */}
+            {/* Dynamic Category Pill Badge */}
             <div>
-              <span className="inline-block px-3.5 py-1 bg-gold/20 border border-gold/40 text-gold text-[10px] sm:text-xs font-semibold uppercase tracking-[0.35em] shadow-sm backdrop-blur-sm">
-                {HERO_SLIDES[currentSlide].badge}
+              <span 
+                className="inline-block px-3 py-1 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.3em] shadow-sm backdrop-blur-sm rounded-full transition-all duration-500"
+                style={{
+                  backgroundColor: activeSlide.theme.badgeBg,
+                  borderColor: activeSlide.theme.badgeBorder,
+                  color: activeSlide.theme.badgeText,
+                  borderWidth: '1px'
+                }}
+              >
+                {activeSlide.badge}
               </span>
             </div>
 
             {/* Main Headline */}
-            <h1 className="font-serif font-light text-4xl sm:text-6xl md:text-7xl lg:text-[80px] leading-[1.08] tracking-wide text-white drop-shadow-[0_4px_20px_rgba(0,0,0,0.95)]">
-              {HERO_SLIDES[currentSlide].title}<br />
-              <span className="italic font-light text-gold font-serif">
-                {HERO_SLIDES[currentSlide].highlight}
+            <h1 className="font-serif font-light text-2xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1] tracking-wide text-white drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)]">
+              {activeSlide.title}<br />
+              <span 
+                className="italic font-light font-serif transition-colors duration-500"
+                style={{ color: activeSlide.theme.highlightColor }}
+              >
+                {activeSlide.highlight}
               </span>
             </h1>
 
             {/* Short Descriptive Copy */}
-            <p className="font-sans text-sm sm:text-base font-light text-gray-100 max-w-xl leading-relaxed tracking-wide drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
-              {HERO_SLIDES[currentSlide].subtitle}
+            <p className="font-sans text-[11px] sm:text-sm md:text-base font-light text-gray-200 max-w-xl leading-relaxed tracking-wide drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)]">
+              {activeSlide.subtitle}
             </p>
 
-            {/* Dual CTAs (Primary + Secondary Buttons) */}
-            <div className="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-6">
+            {/* Dual Responsive CTAs (Side-by-side Compact on Mobile, Full on Desktop) */}
+            <div className="pt-1 sm:pt-4 flex flex-row items-center gap-2.5 sm:gap-5">
               <Link
-                to={HERO_SLIDES[currentSlide].primaryCta.link}
-                className="px-8 py-4 bg-gold hover:bg-gold-light text-black font-sans text-xs uppercase tracking-[0.25em] font-semibold transition-all duration-300 shadow-luxury hover:-translate-y-0.5 text-center"
+                to={activeSlide.primaryCta.link}
+                className="flex-1 sm:flex-initial px-4 py-3 sm:px-8 sm:py-4 font-sans text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.25em] font-semibold transition-all duration-300 shadow-luxury hover:-translate-y-0.5 text-center rounded-sm"
+                style={{
+                  background: activeSlide.theme.primaryBtnBg,
+                  color: activeSlide.theme.primaryBtnText
+                }}
               >
-                {HERO_SLIDES[currentSlide].primaryCta.label} →
+                {activeSlide.primaryCta.label} →
               </Link>
               <Link
-                to={HERO_SLIDES[currentSlide].secondaryCta.link}
-                className="px-8 py-4 border border-white/70 hover:border-gold text-white hover:text-gold hover:bg-black/40 font-sans text-xs uppercase tracking-[0.25em] font-semibold transition-all duration-300 backdrop-blur-xs text-center"
+                to={activeSlide.secondaryCta.link}
+                className="flex-1 sm:flex-initial px-4 py-3 sm:px-8 sm:py-4 border font-sans text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.25em] font-semibold transition-all duration-300 backdrop-blur-xs text-center rounded-sm hover:bg-white/10"
+                style={{
+                  borderColor: activeSlide.theme.secondaryBtnBorder,
+                  color: activeSlide.theme.secondaryBtnText
+                }}
               >
-                {HERO_SLIDES[currentSlide].secondaryCta.label}
+                {activeSlide.secondaryCta.label}
               </Link>
             </div>
 
           </div>
         </div>
 
-        {/* Automatic Carousel Progress Indicator Bar (Non-interactive, subtle line) */}
-        <div className="absolute bottom-0 left-0 right-0 z-30 flex h-[3px] bg-black/40">
+        {/* Dynamic Auto Carousel Progress Bar */}
+        <div className="absolute bottom-0 left-0 right-0 z-30 flex h-[4px] bg-black/40">
           {HERO_SLIDES.map((slide, idx) => (
             <div key={slide.id} className="flex-1 h-full relative overflow-hidden bg-white/15 border-r border-black/40 last:border-r-0">
               {idx === currentSlide && (
                 <div 
                   key={`slide-bar-${currentSlide}`}
-                  className="h-full bg-gold w-full origin-left transition-all duration-[4500ms] ease-linear"
+                  className="h-full w-full origin-left transition-all duration-[4500ms] ease-linear"
+                  style={{ backgroundColor: slide.theme.accentHex }}
                 />
               )}
               {idx < currentSlide && (
-                <div className="h-full w-full bg-gold/70" />
+                <div 
+                  className="h-full w-full opacity-60"
+                  style={{ backgroundColor: slide.theme.accentHex }}
+                />
               )}
             </div>
           ))}
