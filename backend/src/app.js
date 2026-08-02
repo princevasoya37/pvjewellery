@@ -19,6 +19,8 @@ const allowedOrigins = [
   frontendUrl,
   'http://127.0.0.1:3000',
   'http://localhost:3000',
+  'http://127.0.0.1:5000',
+  'http://localhost:5000',
 ].filter(Boolean);
 
 app.use(helmet());
@@ -26,7 +28,11 @@ app.use(cors({
   origin: (origin, callback) => {
     if (!origin) return callback(null, true);
     const sanitizedOrigin = origin.replace(/\/+$/, '');
-    if (allowedOrigins.includes(sanitizedOrigin) || sanitizedOrigin.endsWith('.vercel.app')) {
+    if (
+      allowedOrigins.includes(sanitizedOrigin) ||
+      sanitizedOrigin.endsWith('.vercel.app') ||
+      /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(sanitizedOrigin)
+    ) {
       return callback(null, true);
     }
     return callback(new Error(`CORS Error: Origin ${origin} not allowed`));
