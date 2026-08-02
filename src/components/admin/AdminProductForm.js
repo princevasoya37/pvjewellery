@@ -77,7 +77,7 @@ export default function AdminProductForm({ productId, onClose, onSaved }) {
     fd.append('image', imageFile);
     api.post('/admin/upload/image', fd)
       .then((r) => {
-        const imageUrl = r.data.url || r.data.fullUrl;
+        const imageUrl = r.data.fullUrl || r.data.url;
         if (imageUrl) setForm((prev) => ({ ...prev, images: [...(prev.images || []), imageUrl] }));
         setImageFile(null);
       })
