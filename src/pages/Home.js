@@ -185,10 +185,64 @@ const FEATURED_COLLECTIONS = [
   }
 ];
 
+const HERO_SLIDES = [
+  {
+    id: 1,
+    badge: 'HAUTE JOAILLERIE',
+    title: 'Timeless Elegance,',
+    highlight: 'Crafted for Eternity',
+    subtitle: 'A private maison of jewellers crafting heirlooms in 18-karat champagne gold and ethically sourced diamonds.',
+    image: '/images/hero_landscape_1.png',
+    primaryCta: { label: 'Explore Solitaires', link: '/products?type=engagement' },
+    secondaryCta: { label: 'Discover Atelier', link: '/products?type=custom' }
+  },
+  {
+    id: 2,
+    badge: 'ROYAL EMERALD',
+    title: 'Vivid Emeralds &',
+    highlight: 'Flawless Solitaires',
+    subtitle: 'Hand-selected Colombian emeralds paired with VVS brilliant-cut diamonds forged by master artisans.',
+    image: '/images/hero_landscape_2.png',
+    primaryCta: { label: 'View Royal Emeralds', link: '/products?type=high-jewellery' },
+    secondaryCta: { label: 'Explore Collections', link: '/products' }
+  },
+  {
+    id: 3,
+    badge: 'CELESTIAL SAPPHIRE',
+    title: 'Deep Royal Sapphires &',
+    highlight: 'Diamond Halos',
+    subtitle: 'Deep royal blue Ceylon sapphires encased in delicate brilliant diamond halos, reflecting cosmic radiance.',
+    image: '/images/hero_landscape_3.png',
+    primaryCta: { label: 'Explore Sapphires', link: '/products?type=gemstones' },
+    secondaryCta: { label: 'Maison Journal', link: '/products?type=journal' }
+  },
+  {
+    id: 4,
+    badge: 'BRIDAL SOLITAIRES',
+    title: 'Compose Your Eternal',
+    highlight: 'Bridal Legacy',
+    subtitle: 'GIA-certified, ethically flawless diamonds set in handcrafted royal platinum and champagne gold.',
+    image: '/images/hero_landscape_4.png',
+    primaryCta: { label: 'Book Consultation', link: '/account' },
+    secondaryCta: { label: 'Solitaire Vault', link: '/products?type=engagement' }
+  },
+  {
+    id: 5,
+    badge: 'HERITAGE GOLD',
+    title: 'Artisanal Heritage Gold &',
+    highlight: 'Modern Romance',
+    subtitle: 'Handcrafted 18k and 24k gold masterwork, echoing three generations of maison heritage.',
+    image: '/images/hero_landscape_5.png',
+    primaryCta: { label: 'Discover Heritage Gold', link: '/products?type=gold' },
+    secondaryCta: { label: 'Explore Vaults', link: '/products' }
+  }
+];
+
 export default function Home() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { list } = useSelector((s) => s.products);
+  const [currentSlide, setCurrentSlide] = useState(0);
   const [testimonialIndex, setTestimonialIndex] = useState(0);
   const [quickViewProduct, setQuickViewProduct] = useState(null);
   const [selectedShapeId, setSelectedShapeId] = useState('oval');
@@ -202,6 +256,14 @@ export default function Home() {
     dispatch(fetchCategories());
     dispatch(fetchCollections());
   }, [dispatch]);
+
+  // Hero Auto-Carousel Timer (4.5 seconds per slide)
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+    }, 4500);
+    return () => clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -229,69 +291,98 @@ export default function Home() {
       isDark ? 'bg-[#0D0A07] text-[#F9F6F0]' : 'bg-[#FBF9F6] text-[#111111]'
     }`}>
       
-      {/* 1. Modern Minimal Luxury Hero Section */}
-      <section className={`relative min-h-screen flex items-center pt-24 pb-16 overflow-hidden transition-colors duration-500 ${
-        isDark ? 'bg-[#0D0A07]' : 'bg-[#FBF9F6]'
-      }`}>
-        {/* Subtle Decorative Background Glow */}
-        <div className={`absolute top-1/4 right-1/4 w-[400px] h-[400px] rounded-full blur-[120px] pointer-events-none z-0 ${
-          isDark ? 'bg-gold/10' : 'bg-gold/5'
-        }`} />
-
-        <div className="relative z-10 max-w-[1700px] mx-auto px-6 sm:px-12 lg:px-16 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
-            
-            {/* Left side: vast, widely spaced serif header, descriptive subtext, and underline "Explore Collection" button */}
-            <div className="lg:col-span-7 flex flex-col justify-center space-y-6 lg:space-y-8 animate-fadeIn text-left z-10">
-              <h1 className={`font-serif font-light text-5xl md:text-7xl lg:text-[84px] leading-[1.1] tracking-wide ${
-                isDark ? 'text-white' : 'text-[#111111]'
-              }`}>
-                Timeless Elegance,<br />
-                <span className="italic font-light text-gold font-serif">Crafted for You.</span>
-              </h1>
-
-              <p className={`font-sans text-sm md:text-base font-light max-w-lg leading-relaxed tracking-wide ${
-                isDark ? 'text-gray-300' : 'text-gray-600'
-              }`}>
-                A private maison of jewellers crafting heirlooms in 18-karat gold and ethically sourced diamonds — each piece a quiet promise of permanence.
-              </p>
-
-              <div className="pt-4">
-                <Link
-                  to="/products"
-                  className={`group inline-flex items-center text-xs uppercase tracking-[0.25em] font-semibold relative py-2 ${
-                    isDark ? 'text-white' : 'text-[#111111]'
-                  }`}
-                >
-                  <span>Explore Collection</span>
-                  <span className={`absolute bottom-0 left-0 w-full h-[1.5px] transform scale-x-100 group-hover:scale-x-110 transition-transform duration-300 origin-left ${
-                    isDark ? 'bg-white' : 'bg-[#111111]'
-                  }`} />
-                </Link>
-              </div>
-            </div>
-
-            {/* Right side: tall, vertical portrait image card with slightly softened corners and subtle scale animation on hover. No heavy card borders. */}
-            <div className="lg:col-span-5 flex justify-center w-full z-10">
-              <div className="group relative w-full max-w-[450px] aspect-[3/4] overflow-hidden rounded-2xl shadow-soft-lg bg-current/5">
+      {/* 1. Ultra-Luxury Hero Auto-Carousel Section */}
+      <section 
+        className="relative w-full min-h-[72vh] sm:min-h-[80vh] lg:min-h-[86vh] overflow-hidden flex items-center pt-16 bg-[#0D0A07]"
+      >
+        {/* Carousel Background Slides with Smooth Ken-Burns Zoom & HD Clarity */}
+        {HERO_SLIDES.map((slide, index) => {
+          const isCurrent = index === currentSlide;
+          return (
+            <div
+              key={slide.id}
+              className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+                isCurrent ? 'opacity-100 z-10 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none'
+              }`}
+            >
+              {/* Ultra-HD Widescreen Landscape Background Image with Vibrant Brightness */}
+              <div className="absolute inset-0 overflow-hidden">
                 <img
-                  src="https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?w=1000&auto=format&fit=crop&q=80"
-                  alt="Timeless Luxury Jewellery Portrait"
-                  className="w-full h-full object-cover transition-transform duration-700 ease-out-soft group-hover:scale-105"
-                  loading="eager"
+                  src={slide.image}
+                  alt={slide.title}
+                  className={`w-full h-full object-cover object-center transform transition-transform duration-[7000ms] ease-out ${
+                    isCurrent ? 'scale-105' : 'scale-100'
+                  }`}
+                  style={{ filter: 'brightness(1.08) contrast(1.05)', imageRendering: 'crisp-edges' }}
+                  loading={index === 0 ? 'eager' : 'lazy'}
                 />
               </div>
+
+              {/* Light Subtle Gradient Overlays to keep background 100% bright & vibrant */}
+              <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/25 to-transparent z-10" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent z-10" />
+            </div>
+          );
+        })}
+
+        {/* Hero Content Container */}
+        <div className="relative z-20 max-w-[1700px] mx-auto px-6 sm:px-12 lg:px-16 w-full text-white">
+          <div className="max-w-3xl space-y-6 sm:space-y-8 animate-fadeIn text-left">
+            
+            {/* Category Pill Badge */}
+            <div>
+              <span className="inline-block px-3.5 py-1 bg-gold/20 border border-gold/40 text-gold text-[10px] sm:text-xs font-semibold uppercase tracking-[0.35em] shadow-sm backdrop-blur-sm">
+                {HERO_SLIDES[currentSlide].badge}
+              </span>
+            </div>
+
+            {/* Main Headline */}
+            <h1 className="font-serif font-light text-4xl sm:text-6xl md:text-7xl lg:text-[80px] leading-[1.08] tracking-wide text-white drop-shadow-[0_4px_20px_rgba(0,0,0,0.95)]">
+              {HERO_SLIDES[currentSlide].title}<br />
+              <span className="italic font-light text-gold font-serif">
+                {HERO_SLIDES[currentSlide].highlight}
+              </span>
+            </h1>
+
+            {/* Short Descriptive Copy */}
+            <p className="font-sans text-sm sm:text-base font-light text-gray-100 max-w-xl leading-relaxed tracking-wide drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
+              {HERO_SLIDES[currentSlide].subtitle}
+            </p>
+
+            {/* Dual CTAs (Primary + Secondary Buttons) */}
+            <div className="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-6">
+              <Link
+                to={HERO_SLIDES[currentSlide].primaryCta.link}
+                className="px-8 py-4 bg-gold hover:bg-gold-light text-black font-sans text-xs uppercase tracking-[0.25em] font-semibold transition-all duration-300 shadow-luxury hover:-translate-y-0.5 text-center"
+              >
+                {HERO_SLIDES[currentSlide].primaryCta.label} →
+              </Link>
+              <Link
+                to={HERO_SLIDES[currentSlide].secondaryCta.link}
+                className="px-8 py-4 border border-white/70 hover:border-gold text-white hover:text-gold hover:bg-black/40 font-sans text-xs uppercase tracking-[0.25em] font-semibold transition-all duration-300 backdrop-blur-xs text-center"
+              >
+                {HERO_SLIDES[currentSlide].secondaryCta.label}
+              </Link>
             </div>
 
           </div>
         </div>
 
-        {/* Scroll Indicator */}
-        <div className={`absolute bottom-10 right-8 sm:right-16 z-20 flex items-center gap-4 font-sans text-[10px] uppercase tracking-[0.4em] ${
-          isDark ? 'text-gray-500' : 'text-gray-400'
-        }`}>
-          <span>Scroll</span>
-          <span className={`w-16 h-[1px] inline-block ${isDark ? 'bg-gray-700' : 'bg-gray-300'}`} />
+        {/* Automatic Carousel Progress Indicator Bar (Non-interactive, subtle line) */}
+        <div className="absolute bottom-0 left-0 right-0 z-30 flex h-[3px] bg-black/40">
+          {HERO_SLIDES.map((slide, idx) => (
+            <div key={slide.id} className="flex-1 h-full relative overflow-hidden bg-white/15 border-r border-black/40 last:border-r-0">
+              {idx === currentSlide && (
+                <div 
+                  key={`slide-bar-${currentSlide}`}
+                  className="h-full bg-gold w-full origin-left transition-all duration-[4500ms] ease-linear"
+                />
+              )}
+              {idx < currentSlide && (
+                <div className="h-full w-full bg-gold/70" />
+              )}
+            </div>
+          ))}
         </div>
       </section>
 

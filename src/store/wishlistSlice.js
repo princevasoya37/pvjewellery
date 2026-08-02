@@ -41,10 +41,17 @@ const wishlistSlice = createSlice({
     setWishlistDrawer(state, { payload }) {
       state.isOpen = payload;
     },
+    clearWishlist(state) {
+      state.items = [];
+      state.isOpen = false;
+      try {
+        localStorage.removeItem('wishlist');
+      } catch (_) {}
+    },
   },
 });
 
-export const { toggleWishlistItem, removeWishlistItem, toggleWishlistDrawer, setWishlistDrawer } = wishlistSlice.actions;
+export const { toggleWishlistItem, removeWishlistItem, toggleWishlistDrawer, setWishlistDrawer, clearWishlist } = wishlistSlice.actions;
 export const selectWishlistItems = (s) => s.wishlist.items;
 export const selectIsWishlistOpen = (s) => s.wishlist.isOpen;
 export default wishlistSlice.reducer;

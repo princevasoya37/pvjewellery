@@ -25,7 +25,7 @@ export default function Login() {
         if (data?.user?.role === 'admin') {
           targetPath = '/admin';
         } else {
-          targetPath = '/account';
+          targetPath = '/';
         }
       }
 

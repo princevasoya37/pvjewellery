@@ -29,11 +29,11 @@ export default function Layout() {
       <Header />
       <Drawers />
       <WhatsAppButton />
-      <main className={`flex-1 flex flex-col ${isHome ? '' : 'pt-20 sm:pt-24'}`}>
+      <main className="flex-1 flex flex-col">
         {isHome ? (
           <Outlet />
         ) : (
-          <div className="section-shell py-10 flex-1 w-full">
+          <div className="section-shell py-6 sm:py-10 flex-1 w-full">
             <Outlet />
           </div>
         )}

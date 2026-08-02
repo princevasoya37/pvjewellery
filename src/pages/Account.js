@@ -62,13 +62,23 @@ export default function Account() {
         </Link>
       </div>
 
-      <div className="border-t border-gold/20 pt-8 flex justify-center">
+      <div className="border-t border-gold/20 pt-8 flex flex-col sm:flex-row justify-center gap-4">
+        <button
+          type="button"
+          onClick={() => {
+            dispatch(logoutUser());
+            navigate('/login', { state: { message: 'Signed out. Please log in with another account.' } });
+          }}
+          className="btn-secondary text-xs px-8 py-3 text-gold border-gold/40 hover:bg-gold hover:text-black transition-all shadow-md uppercase tracking-wider font-semibold"
+        >
+          Switch Account ⇄
+        </button>
         <button
           type="button"
           onClick={handleLogout}
-          className="btn-secondary text-xs px-12 py-3 text-red-500 border-red-500/40 hover:bg-red-500 hover:text-white hover:border-red-500 transition-all shadow-md"
+          className="btn-secondary text-xs px-8 py-3 text-red-500 border-red-500/40 hover:bg-red-500 hover:text-white hover:border-red-500 transition-all shadow-md uppercase tracking-wider font-semibold"
         >
-          Securely Sign Out of Private Portal
+          Securely Sign Out ✕
         </button>
       </div>
     </div>
