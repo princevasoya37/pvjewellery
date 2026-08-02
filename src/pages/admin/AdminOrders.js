@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import api from '../../api/client';
 
 const STATUSES = ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled', 'Refunded'];
@@ -12,17 +12,17 @@ export default function AdminOrders() {
   const [detailOrder, setDetailOrder] = useState(null);
   const [trackingNumber, setTrackingNumber] = useState('');
 
-  const fetchOrders = () => {
+  const fetchOrders = useCallback(() => {
     setLoading(true);
     api.get('/admin/orders', { params: { page, limit: 20, status: statusFilter || undefined } })
       .then((r) => setData(r.data))
       .catch(() => setData({ items: [], pagination: {} }))
       .finally(() => setLoading(false));
-  };
+  }, [page, statusFilter]);
 
   useEffect(() => {
     fetchOrders();
-  }, [page, statusFilter]);
+  }, [fetchOrders]);
 
   const updateStatus = (orderId, status, tracking) => {
     setUpdatingId(orderId);

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../../api/client';
 import AdminProductForm from '../../components/admin/AdminProductForm';
@@ -13,17 +13,17 @@ export default function AdminProducts() {
   const [createOpen, setCreateOpen] = useState(false);
   const [bulkOpen, setBulkOpen] = useState(false);
 
-  const fetchProducts = () => {
+  const fetchProducts = useCallback(() => {
     setLoading(true);
     api.get('/admin/products', { params: { page, limit: 20, search: search || undefined } })
       .then((res) => setList(res.data))
       .catch(() => setList({ items: [], pagination: {} }))
       .finally(() => setLoading(false));
-  };
+  }, [page, search]);
 
   useEffect(() => {
     fetchProducts();
-  }, [page, search]);
+  }, [fetchProducts]);
 
   const handleDelete = (id) => {
     if (!window.confirm('Delete this product?')) return;
